@@ -14,7 +14,7 @@ model Community {
   description String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-
+  user_id     String
   posts       Post[]
 }
 

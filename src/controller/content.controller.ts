@@ -1,33 +1,58 @@
 import { Request, Response } from 'express';
-import cloudinary from '../utils/cloudinary';
 import { ServiceWrapper } from '../utils/service-wrapper.util';
-import { add_comment_validator, create_post_validator, like_comment_validator, like_post_validator, search_post_validator, update_post_validator, upload_media_validator } from '../validator/content.validator';
-import { stat } from 'fs';
+import { add_comment_validator, create_community_validator, create_post_validator, like_comment_validator, like_post_validator, search_post_validator, update_post_validator, upload_media_validator } from '../validator/content.validator';
 import { contentService } from '../model/content.model';
 
 
 export const uploadMedia = async (req: Request, res: Response) => {
   return ServiceWrapper.executeWithErrorHandling(res, async () => {
-    let { error, value } = upload_media_validator(req.file);
-    if (error) {
-      throw new Error(`${error.message}`);
-    }
-
-    if (!value.file) {
+    if (!req.file) {
       return res.status(400).json({
         status: 400,
         message: 'No file uploaded'
       });
     }
+    if (!req.file.mimetype.startsWith('image/')) {
+      return res.status(400).json({
+        status: 400,
+        message: 'Only image files are allowed'
+      });
+    }
 
-    const result = await cloudinary.uploader.upload(value?.file?.path);
+    const result = await contentService.uploadMedia(req.file);
     return res.status(200).json({
       status: 200,
       message: 'Media uploaded successfully',
-      url: result.secure_url
+      url: result
     });
   });
 };
+
+export const createCommunity = async (req: Request, res: Response) => {
+  return ServiceWrapper.executeWithErrorHandling(res, async () => {
+    let { error, value } = create_community_validator(req.body);
+    if (error) {
+      throw new Error(`${error.message}`);
+    }
+
+    // Check for duplicate community name (case-insensitive)
+    const existingCommunity = await contentService.getCommunityByName(value.name);
+    if (existingCommunity) {
+      return res.status(409).json({
+        status: 409,
+        message: 'A community with this name already exists'
+      });
+    }
+
+    const community = await contentService.createCommunity(value);
+    return res.status(201).json({
+      status: 201,
+      message: 'Community created successfully',
+      data: community
+    });
+  });
+}
+
 
 export const createPost = async (req: Request, res: Response) => {
   return ServiceWrapper.executeWithErrorHandling(res, async () => {
@@ -144,11 +169,13 @@ export const getAllCommentsByPostId = (req: Request, res: Response) => {
 
 // Search Post
 export const searchPost = (req: Request, res: Response) => {
+  console.log('Search Post Request:', req.query);
   return ServiceWrapper.executeWithErrorHandling(res, async () => {
-    let { error, value } = search_post_validator(req.query);
-    if (error) throw new Error(`${error.message}`);
-
-    const result = await contentService.searchPost(value.query);
+   const {query} = req.query;
+    if (!query || typeof query !== 'string') {
+      return res.status(400).json({ status: 400, message: 'Invalid search query' });
+    }
+    const result = await contentService.searchPost(query);
     return res.status(200).json({ status: 200, data: result });
   });
 };

@@ -1,9 +1,8 @@
 import express from 'express';
-import multer from 'multer';
-import { createPost, getPostsByCommunity, addComment, getAllPosts, getPostById, updatePost, deletePost, uploadMedia, deleteComment, getAllCommentsByPostId, likePost, likeComment, getPostLikeCount, getCommentLikeCount, searchPost } from '../controller/content.controller';
+import { createPost, getPostsByCommunity, addComment, getAllPosts, getPostById, updatePost, deletePost, uploadMedia, deleteComment, getAllCommentsByPostId, likePost, likeComment, getPostLikeCount, getCommentLikeCount, searchPost, createCommunity } from '../controller/content.controller';
+import { memoryUpload } from '../utils/multer';
 
 const router = express.Router();
-const upload = multer({ dest: 'uploads/' });
 
 router.post('/posts/create', createPost);
 router.get('/posts/community/:id', getPostsByCommunity);
@@ -12,8 +11,12 @@ router.get('/posts/:post_id', getPostById);
 router.put('/posts/:post_id/update', updatePost);
 router.delete('/posts/:post_id/delete', deletePost);
 
+
+// create community route
+router.post('/communities/create', createCommunity);
+
 // Media upload route
-router.post('/media/upload', upload.single('file'), uploadMedia);
+router.post('/media/upload', memoryUpload.single('file'), uploadMedia);
 
 // Comment routes
 router.post('/comments/add', addComment);
@@ -27,6 +30,6 @@ router.get('/posts/:post_id/likes/count', getPostLikeCount);
 router.get('/comments/:comment_id/likes/count', getCommentLikeCount);
 
 // Search route
-router.get('/posts/search', searchPost);
+router.post('/posts/search', searchPost);
 
 export default router;

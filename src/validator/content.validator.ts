@@ -29,23 +29,33 @@ const add_comment_schema = Joi.object({
     post_id: Joi.string().required(),
     user_id: Joi.string().required(),
     parent_id: Joi.string().optional().allow(null, ""),
-    text: Joi.string().required(),
+    content: Joi.string().required(),
 });
 export const add_comment_validator = validator(add_comment_schema);
 
 const upload_media_schema = Joi.object({
-    file: Joi.object().required(),
+    path: Joi.string().required(),
 });
 export const upload_media_validator = validator(upload_media_schema);
 
 export const like_post_validator = (data: any) => {
     const schema = Joi.object({
-        user_id: Joi.string().uuid().required(),
-        post_id: Joi.string().uuid().required(),
+        user_id: Joi.string().required(),
+        post_id: Joi.string().required(),
     });
 
     return schema.validate(data);
   };
+
+export const create_community_validator = (data: any) => {
+    const schema = Joi.object({
+        user_id: Joi.string().uuid().required(),
+        name: Joi.string().required(),
+        description: Joi.string().optional().allow(null, ''),
+    });
+
+    return schema.validate(data);
+};
 
 export const like_comment_validator = (data: any) => {
     const schema = Joi.object({

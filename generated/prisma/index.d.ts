@@ -1268,6 +1268,7 @@ export namespace Prisma {
     description: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    user_id: string | null
   }
 
   export type CommunityMaxAggregateOutputType = {
@@ -1276,6 +1277,7 @@ export namespace Prisma {
     description: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    user_id: string | null
   }
 
   export type CommunityCountAggregateOutputType = {
@@ -1284,6 +1286,7 @@ export namespace Prisma {
     description: number
     createdAt: number
     updatedAt: number
+    user_id: number
     _all: number
   }
 
@@ -1294,6 +1297,7 @@ export namespace Prisma {
     description?: true
     createdAt?: true
     updatedAt?: true
+    user_id?: true
   }
 
   export type CommunityMaxAggregateInputType = {
@@ -1302,6 +1306,7 @@ export namespace Prisma {
     description?: true
     createdAt?: true
     updatedAt?: true
+    user_id?: true
   }
 
   export type CommunityCountAggregateInputType = {
@@ -1310,6 +1315,7 @@ export namespace Prisma {
     description?: true
     createdAt?: true
     updatedAt?: true
+    user_id?: true
     _all?: true
   }
 
@@ -1391,6 +1397,7 @@ export namespace Prisma {
     description: string | null
     createdAt: Date
     updatedAt: Date
+    user_id: string
     _count: CommunityCountAggregateOutputType | null
     _min: CommunityMinAggregateOutputType | null
     _max: CommunityMaxAggregateOutputType | null
@@ -1416,6 +1423,7 @@ export namespace Prisma {
     description?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    user_id?: boolean
     posts?: boolean | Community$postsArgs<ExtArgs>
     _count?: boolean | CommunityCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["community"]>
@@ -1426,6 +1434,7 @@ export namespace Prisma {
     description?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    user_id?: boolean
   }, ExtArgs["result"]["community"]>
 
   export type CommunitySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -1434,6 +1443,7 @@ export namespace Prisma {
     description?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    user_id?: boolean
   }, ExtArgs["result"]["community"]>
 
   export type CommunitySelectScalar = {
@@ -1442,9 +1452,10 @@ export namespace Prisma {
     description?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    user_id?: boolean
   }
 
-  export type CommunityOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "createdAt" | "updatedAt", ExtArgs["result"]["community"]>
+  export type CommunityOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "createdAt" | "updatedAt" | "user_id", ExtArgs["result"]["community"]>
   export type CommunityInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     posts?: boolean | Community$postsArgs<ExtArgs>
     _count?: boolean | CommunityCountOutputTypeDefaultArgs<ExtArgs>
@@ -1463,6 +1474,7 @@ export namespace Prisma {
       description: string | null
       createdAt: Date
       updatedAt: Date
+      user_id: string
     }, ExtArgs["result"]["community"]>
     composites: {}
   }
@@ -1892,6 +1904,7 @@ export namespace Prisma {
     readonly description: FieldRef<"Community", 'String'>
     readonly createdAt: FieldRef<"Community", 'DateTime'>
     readonly updatedAt: FieldRef<"Community", 'DateTime'>
+    readonly user_id: FieldRef<"Community", 'String'>
   }
     
 
@@ -5782,7 +5795,8 @@ export namespace Prisma {
     name: 'name',
     description: 'description',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    user_id: 'user_id'
   };
 
   export type CommunityScalarFieldEnum = (typeof CommunityScalarFieldEnum)[keyof typeof CommunityScalarFieldEnum]
@@ -5910,6 +5924,7 @@ export namespace Prisma {
     description?: StringNullableFilter<"Community"> | string | null
     createdAt?: DateTimeFilter<"Community"> | Date | string
     updatedAt?: DateTimeFilter<"Community"> | Date | string
+    user_id?: StringFilter<"Community"> | string
     posts?: PostListRelationFilter
   }
 
@@ -5919,6 +5934,7 @@ export namespace Prisma {
     description?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    user_id?: SortOrder
     posts?: PostOrderByRelationAggregateInput
   }
 
@@ -5931,6 +5947,7 @@ export namespace Prisma {
     description?: StringNullableFilter<"Community"> | string | null
     createdAt?: DateTimeFilter<"Community"> | Date | string
     updatedAt?: DateTimeFilter<"Community"> | Date | string
+    user_id?: StringFilter<"Community"> | string
     posts?: PostListRelationFilter
   }, "id">
 
@@ -5940,6 +5957,7 @@ export namespace Prisma {
     description?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    user_id?: SortOrder
     _count?: CommunityCountOrderByAggregateInput
     _max?: CommunityMaxOrderByAggregateInput
     _min?: CommunityMinOrderByAggregateInput
@@ -5954,6 +5972,7 @@ export namespace Prisma {
     description?: StringNullableWithAggregatesFilter<"Community"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Community"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Community"> | Date | string
+    user_id?: StringWithAggregatesFilter<"Community"> | string
   }
 
   export type PostWhereInput = {
@@ -6136,6 +6155,8 @@ export namespace Prisma {
 
   export type LikeWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    user_id_comment_id?: LikeUser_idComment_idCompoundUniqueInput
+    user_id_post_id?: LikeUser_idPost_idCompoundUniqueInput
     AND?: LikeWhereInput | LikeWhereInput[]
     OR?: LikeWhereInput[]
     NOT?: LikeWhereInput | LikeWhereInput[]
@@ -6145,7 +6166,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Like"> | Date | string
     post?: XOR<PostNullableScalarRelationFilter, PostWhereInput> | null
     comment?: XOR<CommentNullableScalarRelationFilter, CommentWhereInput> | null
-  }, "id">
+  }, "id" | "user_id_comment_id" | "user_id_post_id">
 
   export type LikeOrderByWithAggregationInput = {
     id?: SortOrder
@@ -6175,6 +6196,7 @@ export namespace Prisma {
     description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    user_id: string
     posts?: PostCreateNestedManyWithoutCommunityInput
   }
 
@@ -6184,6 +6206,7 @@ export namespace Prisma {
     description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    user_id: string
     posts?: PostUncheckedCreateNestedManyWithoutCommunityInput
   }
 
@@ -6193,6 +6216,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user_id?: StringFieldUpdateOperationsInput | string
     posts?: PostUpdateManyWithoutCommunityNestedInput
   }
 
@@ -6202,6 +6226,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user_id?: StringFieldUpdateOperationsInput | string
     posts?: PostUncheckedUpdateManyWithoutCommunityNestedInput
   }
 
@@ -6211,6 +6236,7 @@ export namespace Prisma {
     description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    user_id: string
   }
 
   export type CommunityUpdateManyMutationInput = {
@@ -6219,6 +6245,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user_id?: StringFieldUpdateOperationsInput | string
   }
 
   export type CommunityUncheckedUpdateManyInput = {
@@ -6227,6 +6254,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user_id?: StringFieldUpdateOperationsInput | string
   }
 
   export type PostCreateInput = {
@@ -6512,6 +6540,7 @@ export namespace Prisma {
     description?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    user_id?: SortOrder
   }
 
   export type CommunityMaxOrderByAggregateInput = {
@@ -6520,6 +6549,7 @@ export namespace Prisma {
     description?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    user_id?: SortOrder
   }
 
   export type CommunityMinOrderByAggregateInput = {
@@ -6528,6 +6558,7 @@ export namespace Prisma {
     description?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    user_id?: SortOrder
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -6684,6 +6715,16 @@ export namespace Prisma {
   export type PostNullableScalarRelationFilter = {
     is?: PostWhereInput | null
     isNot?: PostWhereInput | null
+  }
+
+  export type LikeUser_idComment_idCompoundUniqueInput = {
+    user_id: string
+    comment_id: string
+  }
+
+  export type LikeUser_idPost_idCompoundUniqueInput = {
+    user_id: string
+    post_id: string
   }
 
   export type LikeCountOrderByAggregateInput = {
@@ -7190,6 +7231,7 @@ export namespace Prisma {
     description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    user_id: string
   }
 
   export type CommunityUncheckedCreateWithoutPostsInput = {
@@ -7198,6 +7240,7 @@ export namespace Prisma {
     description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    user_id: string
   }
 
   export type CommunityCreateOrConnectWithoutPostsInput = {
@@ -7278,6 +7321,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user_id?: StringFieldUpdateOperationsInput | string
   }
 
   export type CommunityUncheckedUpdateWithoutPostsInput = {
@@ -7286,6 +7330,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user_id?: StringFieldUpdateOperationsInput | string
   }
 
   export type CommentUpsertWithWhereUniqueWithoutPostInput = {

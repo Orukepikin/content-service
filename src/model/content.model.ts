@@ -1,6 +1,5 @@
 import { db } from "../utils/db.connection.utils";
-import { Prisma } from "../../generated/prisma";
-import { get } from "http";
+import { uploadToCloudinary } from '../utils/cloudinary';
 
 interface CreatePostDto {
     title: string;
@@ -11,6 +10,12 @@ interface CreatePostDto {
     community_id: string;
 }
 
+interface CreateCommunityDto {
+    name: string;
+    description?: string;
+    user_id: string;
+}
+
 interface CommentInputDto {
     content: string;
     user_id: string;
@@ -19,17 +24,21 @@ interface CommentInputDto {
 }
 
 export const contentService = {
+
     uploadMedia: async (file: Express.Multer.File) => {
+        console.log("Buffer media file:", file.buffer);
         if (!file) {
             throw new Error("No file uploaded");
         }
+
         try {
-            const result = await db.cloudinary.uploader.upload(file.path);
-            return result.secure_url;
-        } catch (error) {
-            throw new Error("Failed to upload media");
+            const result = await uploadToCloudinary(file.buffer);
+            return result;
+        } catch (error: any) {
+            console.error("Upload error:", error);
+            throw new Error(error.message || "Failed to upload media");
         }
-    },
+      },
 
     createPost: async (postData: CreatePostDto) => {
         return await db.post.create({
@@ -46,6 +55,27 @@ export const contentService = {
                 },
             },
         });
+    },
+
+    createCommunity: async (community: CreateCommunityDto) => {
+        return await db.community.create({
+            data: {
+                name: community.name,
+                description: community.description ?? null,
+                user_id: community.user_id,
+            },
+        });
+    },
+
+    getCommunityByName: async (name: string) => {
+        return await db.community.findFirst({
+            where: {
+                name: {
+                    equals: name,
+                    mode: "insensitive",
+                },
+            },
+        }); 
     },
 
     getPostByTitle: async (title: string) => {
