@@ -1,5 +1,6 @@
 import { db } from "../utils/db.connection.utils";
 import { Prisma } from "../../generated/prisma";
+import { get } from "http";
 
 interface CreatePostDto {
     title: string;
@@ -42,6 +43,17 @@ export const contentService = {
                     connect: {
                         id: postData?.community_id,
                     },
+                },
+            },
+        });
+    },
+
+    getPostByTitle: async (title: string) => {
+        return await db.post.findFirst({
+            where: {
+                title: {
+                    equals: title,
+                    mode: "insensitive",
                 },
             },
         });

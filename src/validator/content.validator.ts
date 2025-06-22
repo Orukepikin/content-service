@@ -38,6 +38,44 @@ const upload_media_schema = Joi.object({
 });
 export const upload_media_validator = validator(upload_media_schema);
 
+export const like_post_validator = (data: any) => {
+    const schema = Joi.object({
+        user_id: Joi.string().uuid().required(),
+        post_id: Joi.string().uuid().required(),
+    });
+
+    return schema.validate(data);
+  };
+
+export const like_comment_validator = (data: any) => {
+    const schema = Joi.object({
+        user_id: Joi.string().uuid().required(),
+        comment_id: Joi.string().uuid().required(),
+    });
+
+    return schema.validate(data);
+  };
+
+
+export const update_post_validator = (data: any) => {
+    const schema = Joi.object({
+        title: Joi.string().min(3).max(100).required(),
+        category: Joi.string().min(3).max(50).required(),
+        description: Joi.string().min(10).required(),
+        mediaUrl: Joi.string().uri().optional().allow(null, ''),
+    });
+
+    return schema.validate(data);
+  };
+
+export const search_post_validator = (data: any) => {
+    const schema = Joi.object({
+        query: Joi.string().min(1).required(),
+    });
+
+    return schema.validate(data);
+  };
+
 
 
 
