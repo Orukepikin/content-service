@@ -159,6 +159,19 @@ exports.Prisma.LikeScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.EventScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  location: 'location',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  coverImage: 'coverImage',
+  createdBy: 'createdBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -179,7 +192,8 @@ exports.Prisma.ModelName = {
   Community: 'Community',
   Post: 'Post',
   Comment: 'Comment',
-  Like: 'Like'
+  Like: 'Like',
+  Event: 'Event'
 };
 
 /**

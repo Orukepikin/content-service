@@ -23,6 +23,25 @@ interface CommentInputDto {
     parent_id?: string | null;
 }
 
+export interface CreateEventDto {
+    title: string;
+    description?: string;
+    location?: string;
+    startDate: Date;
+    endDate: Date;
+    coverImage?: string;
+    createdBy: string;
+}
+
+export interface UpdateEventDto {
+    title?: string;
+    description?: string;
+    location?: string;
+    startDate?: Date;
+    endDate?: Date;
+    coverImage?: string;
+  }
+
 export const contentService = {
 
     uploadMedia: async (file: Express.Multer.File) => {
@@ -66,6 +85,39 @@ export const contentService = {
             },
         });
     },
+
+
+    createEvent: async (event: CreateEventDto) => {
+        return await db.event.create({
+            data: event
+        });
+    },
+
+    updateEvent: async (id: string, event: UpdateEventDto) => {
+        return await db.event.update({
+            where: { id },
+            data: event
+        });
+    },
+
+    deleteEvent: async (id: string) => {
+        return await db.event.delete({
+            where: { id }
+        });
+      },
+
+    getEventById: async (id: string) => {
+        return await db.event.findUnique({
+            where: { id }
+        });
+    },
+
+    getAllEvents: async () => {
+        return await db.event.findMany({
+            orderBy: { startDate: 'asc' }
+        });
+      },
+    
 
     getCommunityByName: async (name: string) => {
         return await db.community.findFirst({

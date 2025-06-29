@@ -1,5 +1,5 @@
 import express from 'express';
-import { createPost, getPostsByCommunity, addComment, getAllPosts, getPostById, updatePost, deletePost, uploadMedia, deleteComment, getAllCommentsByPostId, likePost, likeComment, getPostLikeCount, getCommentLikeCount, searchPost, createCommunity } from '../controller/content.controller';
+import { createPost, getPostsByCommunity, addComment, getAllPosts, getPostById, updatePost, deletePost, uploadMedia, deleteComment, getAllCommentsByPostId, likePost, likeComment, getPostLikeCount, getCommentLikeCount, searchPost, createCommunity, createEvent, updateEvent, deleteEvent, getAllEvents, getEventById } from '../controller/content.controller';
 import { memoryUpload } from '../utils/multer';
 
 const router = express.Router();
@@ -31,5 +31,14 @@ router.get('/comments/:comment_id/likes/count', getCommentLikeCount);
 
 // Search route
 router.post('/posts/search', searchPost);
+
+
+// Events routes
+router.post('/events/create', createEvent);
+router.put('/events/:id', updateEvent);
+router.delete('/events/:id', deleteEvent);
+
+router.get('/events/getAll', getAllEvents);
+router.get('/events/:id', getEventById);
 
 export default router;

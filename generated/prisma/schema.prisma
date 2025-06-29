@@ -62,3 +62,16 @@ model Like {
   @@unique([user_id, comment_id])
   @@unique([user_id, post_id])
 }
+
+model Event {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  location    String?
+  startDate   DateTime
+  endDate     DateTime
+  coverImage  String?
+  createdBy   String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

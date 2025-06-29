@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { ServiceWrapper } from '../utils/service-wrapper.util';
-import { add_comment_validator, create_community_validator, create_post_validator, like_comment_validator, like_post_validator, search_post_validator, update_post_validator, upload_media_validator } from '../validator/content.validator';
+import { add_comment_validator, create_community_validator, create_event_validator, create_post_validator, like_comment_validator, like_post_validator, search_post_validator, update_event_validator, update_post_validator, upload_media_validator } from '../validator/content.validator';
 import { contentService } from '../model/content.model';
 
 
@@ -52,6 +52,78 @@ export const createCommunity = async (req: Request, res: Response) => {
     });
   });
 }
+
+export const createEvent = async (req: Request, res: Response) => {
+  return ServiceWrapper.executeWithErrorHandling(res, async () => {
+    const { error, value } = create_event_validator(req.body);
+    if (error) {
+      throw new Error(`${error.message}`);
+    }
+
+    const event = await contentService.createEvent(value);
+    return res.status(201).json({
+      status: 201,
+      message: 'Event created successfully',
+      data: event
+    });
+  });
+};
+
+export const updateEvent = async (req: Request, res: Response) => {
+  return ServiceWrapper.executeWithErrorHandling(res, async () => {
+    const { error, value } = update_event_validator(req.body);
+    if (error) {
+      throw new Error(`${error.message}`);
+    }
+
+    const event = await contentService.updateEvent(req.params.id, value);
+    return res.status(200).json({
+      status: 200,
+      message: 'Event updated successfully',
+      data: event
+    });
+  });
+};
+
+export const deleteEvent = async (req: Request, res: Response) => {
+  return ServiceWrapper.executeWithErrorHandling(res, async () => {
+    await contentService.deleteEvent(req.params.id);
+    return res.status(200).json({
+      status: 200,
+      message: 'Event deleted successfully'
+    });
+  });
+};
+
+export const getEventById = async (req: Request, res: Response) => {
+  return ServiceWrapper.executeWithErrorHandling(res, async () => {
+    const event = await contentService.getEventById(req.params.id);
+    if (!event) {
+      return res.status(404).json({
+        status: 404,
+        message: 'Event not found'
+      });
+    }
+
+    return res.status(200).json({
+      status: 200,
+      message: 'Event retrieved successfully',
+      data: event
+    });
+  });
+};
+
+export const getAllEvents = async (_req: Request, res: Response) => {
+  return ServiceWrapper.executeWithErrorHandling(res, async () => {
+    const events = await contentService.getAllEvents();
+    return res.status(200).json({
+      status: 200,
+      message: 'Events retrieved successfully',
+      data: events
+    });
+  });
+};
+
 
 
 export const createPost = async (req: Request, res: Response) => {

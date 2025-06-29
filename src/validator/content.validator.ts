@@ -67,6 +67,7 @@ export const like_comment_validator = (data: any) => {
   };
 
 
+
 export const update_post_validator = (data: any) => {
     const schema = Joi.object({
         title: Joi.string().min(3).max(100).required(),
@@ -77,6 +78,27 @@ export const update_post_validator = (data: any) => {
 
     return schema.validate(data);
   };
+
+export const create_event_validator = (data: any) =>
+    Joi.object({
+        title: Joi.string().required(),
+        description: Joi.string().optional(),
+        location: Joi.string().optional(),
+        startDate: Joi.date().iso().required(),
+        endDate: Joi.date().iso().required(),
+        coverImage: Joi.string().uri().optional(),
+        createdBy: Joi.string().required()
+    }).validate(data);
+
+export const update_event_validator = (data: any) =>
+    Joi.object({
+        title: Joi.string().optional(),
+        description: Joi.string().optional(),
+        location: Joi.string().optional(),
+        startDate: Joi.date().iso().optional(),
+        endDate: Joi.date().iso().optional(),
+        coverImage: Joi.string().uri().optional()
+    }).validate(data);
 
 export const search_post_validator = (data: any) => {
     const schema = Joi.object({
