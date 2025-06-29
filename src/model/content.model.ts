@@ -85,7 +85,26 @@ export const contentService = {
             },
         });
     },
+    getAllCommunities: async (name?: string) => {
+        return await db.community.findMany({
+            where: name
+                ? {
+                    name: {
+                        contains: name,
+                        mode: 'insensitive'
+                    }
+                }
+                : undefined,
+            orderBy: { createdAt: 'desc' }
+        });
+    },
 
+    getCommunityById: async (id: string) => {
+        return await db.community.findUnique({
+            where: { id }
+        });
+    },
+    
 
     createEvent: async (event: CreateEventDto) => {
         return await db.event.create({
@@ -112,12 +131,20 @@ export const contentService = {
         });
     },
 
-    getAllEvents: async () => {
+    getAllEvents: async (title?: string) => {
         return await db.event.findMany({
+            where: title
+                ? {
+                    title: {
+                        contains: title,
+                        mode: 'insensitive'
+                    }
+                }
+                : undefined,
             orderBy: { startDate: 'asc' }
         });
-      },
-    
+    },
+
 
     getCommunityByName: async (name: string) => {
         return await db.community.findFirst({

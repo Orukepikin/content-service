@@ -1,5 +1,5 @@
 import express from 'express';
-import { createPost, getPostsByCommunity, addComment, getAllPosts, getPostById, updatePost, deletePost, uploadMedia, deleteComment, getAllCommentsByPostId, likePost, likeComment, getPostLikeCount, getCommentLikeCount, searchPost, createCommunity, createEvent, updateEvent, deleteEvent, getAllEvents, getEventById } from '../controller/content.controller';
+import { createPost, getPostsByCommunity, addComment, getAllPosts, getPostById, updatePost, deletePost, uploadMedia, deleteComment, getAllCommentsByPostId, likePost, likeComment, getPostLikeCount, getCommentLikeCount, searchPost, createCommunity, createEvent, updateEvent, deleteEvent, getAllEvents, getEventById, getCommunityById } from '../controller/content.controller';
 import { memoryUpload } from '../utils/multer';
 
 const router = express.Router();
@@ -14,6 +14,8 @@ router.delete('/posts/:post_id/delete', deletePost);
 
 // create community route
 router.post('/communities/create', createCommunity);
+router.get('/communities/:id', getCommunityById);
+
 
 // Media upload route
 router.post('/media/upload', memoryUpload.single('file'), uploadMedia);

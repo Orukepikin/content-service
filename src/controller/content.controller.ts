@@ -53,6 +53,20 @@ export const createCommunity = async (req: Request, res: Response) => {
   });
 }
 
+export const getAllCommunities = async (req: Request, res: Response) => {
+  return ServiceWrapper.executeWithErrorHandling(res, async () => {
+    const { name } = req.query;
+    const communities = await contentService.getAllCommunities(name as string);
+
+    return res.status(200).json({
+      status: 200,
+      message: 'Communities retrieved successfully',
+      data: communities
+    });
+  });
+};
+
+
 export const createEvent = async (req: Request, res: Response) => {
   return ServiceWrapper.executeWithErrorHandling(res, async () => {
     const { error, value } = create_event_validator(req.body);
@@ -113,9 +127,32 @@ export const getEventById = async (req: Request, res: Response) => {
   });
 };
 
-export const getAllEvents = async (_req: Request, res: Response) => {
+export const getCommunityById = async (req: Request, res: Response) => {
   return ServiceWrapper.executeWithErrorHandling(res, async () => {
-    const events = await contentService.getAllEvents();
+    const { id } = req.params;
+
+    const community = await contentService.getCommunityById(id);
+    if (!community) {
+      return res.status(404).json({
+        status: 404,
+        message: 'Community not found'
+      });
+    }
+
+    return res.status(200).json({
+      status: 200,
+      message: 'Community retrieved successfully',
+      data: community
+    });
+  });
+};
+
+
+export const getAllEvents = async (req: Request, res: Response) => {
+  return ServiceWrapper.executeWithErrorHandling(res, async () => {
+    const { title } = req.query;
+    const events = await contentService.getAllEvents(title as string);
+
     return res.status(200).json({
       status: 200,
       message: 'Events retrieved successfully',
@@ -123,7 +160,6 @@ export const getAllEvents = async (_req: Request, res: Response) => {
     });
   });
 };
-
 
 
 export const createPost = async (req: Request, res: Response) => {
