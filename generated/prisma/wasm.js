@@ -124,6 +124,8 @@ exports.Prisma.CommunityScalarFieldEnum = {
   id: 'id',
   name: 'name',
   description: 'description',
+  location: 'location',
+  members: 'members',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   user_id: 'user_id'

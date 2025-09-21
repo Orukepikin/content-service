@@ -12,6 +12,8 @@ model Community {
   id          String  @id @default(uuid())
   name        String
   description String?
+  location    String?
+  members     String[] @default([])
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   user_id     String

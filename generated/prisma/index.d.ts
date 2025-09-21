@@ -1357,6 +1357,7 @@ export namespace Prisma {
     id: string | null
     name: string | null
     description: string | null
+    location: string | null
     createdAt: Date | null
     updatedAt: Date | null
     user_id: string | null
@@ -1366,6 +1367,7 @@ export namespace Prisma {
     id: string | null
     name: string | null
     description: string | null
+    location: string | null
     createdAt: Date | null
     updatedAt: Date | null
     user_id: string | null
@@ -1375,6 +1377,8 @@ export namespace Prisma {
     id: number
     name: number
     description: number
+    location: number
+    members: number
     createdAt: number
     updatedAt: number
     user_id: number
@@ -1386,6 +1390,7 @@ export namespace Prisma {
     id?: true
     name?: true
     description?: true
+    location?: true
     createdAt?: true
     updatedAt?: true
     user_id?: true
@@ -1395,6 +1400,7 @@ export namespace Prisma {
     id?: true
     name?: true
     description?: true
+    location?: true
     createdAt?: true
     updatedAt?: true
     user_id?: true
@@ -1404,6 +1410,8 @@ export namespace Prisma {
     id?: true
     name?: true
     description?: true
+    location?: true
+    members?: true
     createdAt?: true
     updatedAt?: true
     user_id?: true
@@ -1486,6 +1494,8 @@ export namespace Prisma {
     id: string
     name: string
     description: string | null
+    location: string | null
+    members: string[]
     createdAt: Date
     updatedAt: Date
     user_id: string
@@ -1512,6 +1522,8 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     description?: boolean
+    location?: boolean
+    members?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user_id?: boolean
@@ -1523,6 +1535,8 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     description?: boolean
+    location?: boolean
+    members?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user_id?: boolean
@@ -1532,6 +1546,8 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     description?: boolean
+    location?: boolean
+    members?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user_id?: boolean
@@ -1541,12 +1557,14 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     description?: boolean
+    location?: boolean
+    members?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user_id?: boolean
   }
 
-  export type CommunityOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "createdAt" | "updatedAt" | "user_id", ExtArgs["result"]["community"]>
+  export type CommunityOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "location" | "members" | "createdAt" | "updatedAt" | "user_id", ExtArgs["result"]["community"]>
   export type CommunityInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     posts?: boolean | Community$postsArgs<ExtArgs>
     _count?: boolean | CommunityCountOutputTypeDefaultArgs<ExtArgs>
@@ -1563,6 +1581,8 @@ export namespace Prisma {
       id: string
       name: string
       description: string | null
+      location: string | null
+      members: string[]
       createdAt: Date
       updatedAt: Date
       user_id: string
@@ -1993,6 +2013,8 @@ export namespace Prisma {
     readonly id: FieldRef<"Community", 'String'>
     readonly name: FieldRef<"Community", 'String'>
     readonly description: FieldRef<"Community", 'String'>
+    readonly location: FieldRef<"Community", 'String'>
+    readonly members: FieldRef<"Community", 'String[]'>
     readonly createdAt: FieldRef<"Community", 'DateTime'>
     readonly updatedAt: FieldRef<"Community", 'DateTime'>
     readonly user_id: FieldRef<"Community", 'String'>
@@ -6945,6 +6967,8 @@ export namespace Prisma {
     id: 'id',
     name: 'name',
     description: 'description',
+    location: 'location',
+    members: 'members',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     user_id: 'user_id'
@@ -7089,6 +7113,8 @@ export namespace Prisma {
     id?: StringFilter<"Community"> | string
     name?: StringFilter<"Community"> | string
     description?: StringNullableFilter<"Community"> | string | null
+    location?: StringNullableFilter<"Community"> | string | null
+    members?: StringNullableListFilter<"Community">
     createdAt?: DateTimeFilter<"Community"> | Date | string
     updatedAt?: DateTimeFilter<"Community"> | Date | string
     user_id?: StringFilter<"Community"> | string
@@ -7099,6 +7125,8 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrderInput | SortOrder
+    location?: SortOrderInput | SortOrder
+    members?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     user_id?: SortOrder
@@ -7112,6 +7140,8 @@ export namespace Prisma {
     NOT?: CommunityWhereInput | CommunityWhereInput[]
     name?: StringFilter<"Community"> | string
     description?: StringNullableFilter<"Community"> | string | null
+    location?: StringNullableFilter<"Community"> | string | null
+    members?: StringNullableListFilter<"Community">
     createdAt?: DateTimeFilter<"Community"> | Date | string
     updatedAt?: DateTimeFilter<"Community"> | Date | string
     user_id?: StringFilter<"Community"> | string
@@ -7122,6 +7152,8 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrderInput | SortOrder
+    location?: SortOrderInput | SortOrder
+    members?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     user_id?: SortOrder
@@ -7137,6 +7169,8 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Community"> | string
     name?: StringWithAggregatesFilter<"Community"> | string
     description?: StringNullableWithAggregatesFilter<"Community"> | string | null
+    location?: StringNullableWithAggregatesFilter<"Community"> | string | null
+    members?: StringNullableListFilter<"Community">
     createdAt?: DateTimeWithAggregatesFilter<"Community"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Community"> | Date | string
     user_id?: StringWithAggregatesFilter<"Community"> | string
@@ -7438,6 +7472,8 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
+    location?: string | null
+    members?: CommunityCreatemembersInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     user_id: string
@@ -7448,6 +7484,8 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
+    location?: string | null
+    members?: CommunityCreatemembersInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     user_id: string
@@ -7458,6 +7496,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    members?: CommunityUpdatemembersInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user_id?: StringFieldUpdateOperationsInput | string
@@ -7468,6 +7508,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    members?: CommunityUpdatemembersInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user_id?: StringFieldUpdateOperationsInput | string
@@ -7478,6 +7520,8 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
+    location?: string | null
+    members?: CommunityCreatemembersInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     user_id: string
@@ -7487,6 +7531,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    members?: CommunityUpdatemembersInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user_id?: StringFieldUpdateOperationsInput | string
@@ -7496,6 +7542,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    members?: CommunityUpdatemembersInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user_id?: StringFieldUpdateOperationsInput | string
@@ -7843,6 +7891,14 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
+  export type StringNullableListFilter<$PrismaModel = never> = {
+    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    has?: string | StringFieldRefInput<$PrismaModel> | null
+    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
+    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
+  }
+
   export type DateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -7873,6 +7929,8 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrder
+    location?: SortOrder
+    members?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     user_id?: SortOrder
@@ -7882,6 +7940,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrder
+    location?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     user_id?: SortOrder
@@ -7891,6 +7950,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrder
+    location?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     user_id?: SortOrder
@@ -8125,6 +8185,10 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
+  export type CommunityCreatemembersInput = {
+    set: string[]
+  }
+
   export type PostCreateNestedManyWithoutCommunityInput = {
     create?: XOR<PostCreateWithoutCommunityInput, PostUncheckedCreateWithoutCommunityInput> | PostCreateWithoutCommunityInput[] | PostUncheckedCreateWithoutCommunityInput[]
     connectOrCreate?: PostCreateOrConnectWithoutCommunityInput | PostCreateOrConnectWithoutCommunityInput[]
@@ -8145,6 +8209,11 @@ export namespace Prisma {
 
   export type NullableStringFieldUpdateOperationsInput = {
     set?: string | null
+  }
+
+  export type CommunityUpdatemembersInput = {
+    set?: string[]
+    push?: string | string[]
   }
 
   export type DateTimeFieldUpdateOperationsInput = {
@@ -8603,6 +8672,8 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
+    location?: string | null
+    members?: CommunityCreatemembersInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     user_id: string
@@ -8612,6 +8683,8 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
+    location?: string | null
+    members?: CommunityCreatemembersInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     user_id: string
@@ -8693,6 +8766,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    members?: CommunityUpdatemembersInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user_id?: StringFieldUpdateOperationsInput | string
@@ -8702,6 +8777,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    members?: CommunityUpdatemembersInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user_id?: StringFieldUpdateOperationsInput | string

@@ -14,6 +14,7 @@ interface CreateCommunityDto {
     name: string;
     description?: string;
     user_id: string;
+    location: string;
 }
 
 interface CommentInputDto {
@@ -45,19 +46,19 @@ export interface UpdateEventDto {
 export const contentService = {
 
     uploadMedia: async (file: Express.Multer.File) => {
-        console.log("Buffer media file:", file.buffer);
         if (!file) {
             throw new Error("No file uploaded");
         }
 
         try {
-            const result = await uploadToCloudinary(file.buffer);
+            const result = await uploadToCloudinary(file.buffer, file.mimetype);
             return result;
         } catch (error: any) {
             console.error("Upload error:", error);
             throw new Error(error.message || "Failed to upload media");
         }
-      },
+    },
+
 
     createPost: async (postData: CreatePostDto) => {
         return await db.post.create({
@@ -80,24 +81,49 @@ export const contentService = {
         return await db.community.create({
             data: {
                 name: community.name,
+                location: community.location,
                 description: community.description ?? null,
                 user_id: community.user_id,
             },
         });
     },
+
+    joinCommunity: async (communityId: string, userId: string) => {
+        const community = await db.community.findUnique({
+            where: { id: communityId },
+        });
+        if (!community) {
+            throw new Error("Community not found");
+        }
+        if (community.members.includes(userId)) {
+            throw new Error("User already a member of the community");
+        }
+        const updatedMembers = [...community.members, userId];
+        return await db.community.update({
+            where: { id: communityId },
+            data: { members: updatedMembers },
+        });
+    },
     getAllCommunities: async (name?: string) => {
-        return await db.community.findMany({
+        const communities = await db.community.findMany({
             where: name
                 ? {
                     name: {
                         contains: name,
-                        mode: 'insensitive'
-                    }
+                        mode: 'insensitive',
+                    },
                 }
                 : undefined,
-            orderBy: { createdAt: 'desc' }
+            orderBy: { createdAt: "desc" },
         });
+
+        return communities.map((community) => ({
+            ...community,
+            membersCount: community.members.length, // 👈 derived count
+        }));
     },
+
+
 
     getCommunityById: async (id: string) => {
         return await db.community.findUnique({
@@ -277,7 +303,7 @@ export const contentService = {
                 likes: true,
             },
             orderBy: {
-                createdAt: "asc",
+                createdAt: "desc",
             },
         });
       },

@@ -51,9 +51,18 @@ export const create_community_validator = (data: any) => {
     const schema = Joi.object({
         user_id: Joi.string().uuid().required(),
         name: Joi.string().required(),
+        location: Joi.string().required(),
         description: Joi.string().optional().allow(null, ''),
     });
 
+    return schema.validate(data);
+};
+
+export const join_community_validator = (data: any) => {
+    const schema = Joi.object({
+        user_id: Joi.string().uuid().required(),
+        community_id: Joi.string().uuid().required(),
+    });
     return schema.validate(data);
 };
 
