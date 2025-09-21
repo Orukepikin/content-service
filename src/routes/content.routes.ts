@@ -15,7 +15,7 @@ router.delete('/posts/:post_id/delete', deletePost);
 // create community route
 router.post('/communities/create', createCommunity);
 router.get('/communities/:id', getCommunityById);
-router.get('/communities/all', getAllCommunities);
+router.get('/communities', getAllCommunities);
 
 
 // Media upload route
