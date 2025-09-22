@@ -119,7 +119,7 @@ export const contentService = {
 
         return communities.map((community) => ({
             ...community,
-            membersCount: community.members.length, // 👈 derived count
+            membersCount: community.members.length, 
         }));
     },
 
@@ -307,6 +307,13 @@ export const contentService = {
             },
         });
       },
+
+    getPostCountByUserId: async (userId: string) => {
+        const count = await db.post.count({
+            where: { user_id: userId },
+        });
+        return count;
+    },
 
     searchPost: async (query: string) => {
         return await db.post.findMany({

@@ -314,6 +314,22 @@ export const getPostById = (req: Request, res: Response) => {
   });
 };
 
+export const getPostCount = (req: Request, res: Response) => {
+  return ServiceWrapper.executeWithErrorHandling(res, async () => {
+    const userId = req.query.userId as string;
+    if (!userId) {
+      throw new Error("User ID is required");
+    }
+    const count = await contentService.getPostCountByUserId(userId);
+    return res.status(200).json({
+      message: "success",
+      status: 200,
+      userId,
+      count,
+    });
+  });
+};
+
 // Delete Post
 export const deletePost = (req: Request, res: Response) => {
   return ServiceWrapper.executeWithErrorHandling(res, async () => {
