@@ -5,7 +5,7 @@ interface CreatePostDto {
     title: string;
     category: string;
     description: string;
-    mediaUrl?: string | null;
+    media_url?: string | null;
     user_id: string;
     community_id: string;
 }
@@ -66,7 +66,7 @@ export const contentService = {
                 title: postData.title,
                 category: postData.category,
                 description: postData.description,
-                mediaUrl: postData.mediaUrl ?? null,
+                mediaUrl: postData.media_url ?? null,
                 user_id: postData.user_id,
                 community: {
                     connect: {
@@ -381,7 +381,7 @@ export const contentService = {
                 title: data.title,
                 description: data.description,
                 category: data.category,
-                mediaUrl: data.mediaUrl,
+                mediaUrl: data.media_url,
             },
         });
     },
