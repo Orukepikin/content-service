@@ -9,15 +9,89 @@ datasource db {
 }
 
 model Community {
-  id          String   @id @default(uuid())
-  name        String
-  description String?
-  location    String?
-  members     String[] @default([])
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  user_id     String
-  posts       Post[]
+  id            String          @id @default(uuid())
+  name          String          @unique
+  description   String?
+  location      String?
+  state         String?
+  lga           String?
+  communityType CommunityType   @default(USER_CREATED)
+  status        CommunityStatus @default(PENDING)
+  createdBy     String
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  members CommunityMember[]
+  posts   Post[]
+
+  @@index([state, lga])
+  @@index([status])
+  @@index([communityType])
+}
+
+enum CommunityType {
+  SYSTEM_LGA
+  USER_CREATED
+}
+
+enum CommunityStatus {
+  ACTIVE
+  PENDING
+  REJECTED
+  ARCHIVED
+}
+
+model CommunityRequest {
+  id              String        @id @default(uuid())
+  name            String
+  description     String?
+  location        String?
+  state           String?
+  lga             String?
+  requestedBy     String
+  status          RequestStatus @default(PENDING)
+  rejectionReason String?
+  approvedBy      String?
+  communityId     String?       @unique
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@index([requestedBy])
+  @@index([status])
+}
+
+enum RequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model CommunityMember {
+  id          String       @id @default(uuid())
+  userId      String
+  communityId String
+  role        MemberRole   @default(MEMBER)
+  status      MemberStatus @default(PENDING)
+  joinedAt    DateTime?
+  requestedAt DateTime     @default(now())
+
+  community Community @relation(fields: [communityId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, communityId])
+  @@index([communityId])
+  @@index([userId])
+  @@index([status])
+}
+
+enum MemberRole {
+  ADMIN
+  MEMBER
+}
+
+enum MemberStatus {
+  PENDING
+  APPROVED
+  REJECTED
 }
 
 model Post {
@@ -41,7 +115,7 @@ model Comment {
   content   String
   user_id   String
   post_id   String
-  parent_id String? // for threaded replies
+  parent_id String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

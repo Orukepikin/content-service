@@ -1,6 +1,23 @@
 import e, { Request, Response } from 'express';
 import { ServiceWrapper } from '../utils/service-wrapper.util';
-import { add_comment_validator, create_community_validator, create_event_validator, create_post_validator, join_community_validator, like_comment_validator, like_post_validator, search_post_validator, update_event_validator, update_post_validator, upload_media_validator } from '../validator/content.validator';
+import {
+  add_comment_validator,
+  approve_community_request_validator,
+  approve_member_validator,
+  create_community_request_validator,
+  create_community_validator,
+  create_event_validator,
+  create_post_validator,
+  join_community_validator,
+  like_comment_validator,
+  like_post_validator,
+  reject_community_request_validator,
+  reject_member_validator,
+  search_post_validator,
+  update_event_validator,
+  update_post_validator,
+  upload_media_validator
+} from '../validator/content.validator';
 import { contentService } from '../model/content.model';
 
 
@@ -28,46 +45,102 @@ export const uploadMedia = async (req: Request, res: Response) => {
   });
 };
 
-export const createCommunity = async (req: Request, res: Response) => {
+// ============= COMMUNITY REQUEST CONTROLLERS =============
+
+export const createCommunityRequest = async (req: Request, res: Response) => {
   return ServiceWrapper.executeWithErrorHandling(res, async () => {
-    let { error, value } = create_community_validator(req.body);
+    let { error, value } = create_community_request_validator(req.body);
     if (error) {
       throw new Error(`${error.message}`);
     }
 
-    // Check for duplicate community name (case-insensitive)
-    const existingCommunity = await contentService.getCommunityByName(value.name);
-    if (existingCommunity) {
-      return res.status(409).json({
-        status: 409,
-        message: 'A community with this name already exists'
-      });
-    }
-
-    const community = await contentService.createCommunity(value);
+    const request = await contentService.createCommunityRequest(value);
     return res.status(201).json({
       status: 201,
-      message: 'Community created successfully',
-      data: community
+      message: 'Community request submitted successfully. Please wait for admin approval.',
+      data: request
     });
   });
-}
+};
 
-export const joinCommunity = async (req: Request, res: Response) => {
+export const approveCommunityRequest = async (req: Request, res: Response) => {
   return ServiceWrapper.executeWithErrorHandling(res, async () => {
-    let { error, value } = join_community_validator(req.body);
+    const { id } = req.params;
+    const { approvedBy } = req.body;
+
+    let { error, value } = approve_community_request_validator({
+      requestId: id,
+      approvedBy
+    });
     if (error) {
       throw new Error(`${error.message}`);
     }
 
-    const result = await contentService.joinCommunity(value.community_id, value.user_id);
+    const result = await contentService.approveCommunityRequest(value);
     return res.status(200).json({
       status: 200,
-      message: 'Joined community successfully',
+      message: 'Community request approved successfully',
       data: result
     });
   });
-}
+};
+
+export const rejectCommunityRequest = async (req: Request, res: Response) => {
+  return ServiceWrapper.executeWithErrorHandling(res, async () => {
+    const { id } = req.params;
+    const { rejectedBy, reason } = req.body;
+
+    let { error, value } = reject_community_request_validator({
+      requestId: id,
+      rejectedBy,
+      reason
+    });
+    if (error) {
+      throw new Error(`${error.message}`);
+    }
+
+    const result = await contentService.rejectCommunityRequest(value);
+    return res.status(200).json({
+      status: 200,
+      message: 'Community request rejected',
+      data: result
+    });
+  });
+};
+
+export const getPendingCommunityRequests = async (req: Request, res: Response) => {
+  return ServiceWrapper.executeWithErrorHandling(res, async () => {
+    const requests = await contentService.getPendingCommunityRequests();
+    return res.status(200).json({
+      status: 200,
+      message: 'Pending community requests retrieved successfully',
+      data: requests
+    });
+  });
+};
+
+export const getUserCommunityRequests = async (req: Request, res: Response) => {
+  return ServiceWrapper.executeWithErrorHandling(res, async () => {
+    const { userId } = req.params;
+    const requests = await contentService.getUserCommunityRequests(userId);
+    return res.status(200).json({
+      status: 200,
+      message: 'User community requests retrieved successfully',
+      data: requests
+    });
+  });
+};
+
+// ============= COMMUNITY CONTROLLERS =============
+
+export const createCommunity = async (req: Request, res: Response) => {
+  return ServiceWrapper.executeWithErrorHandling(res, async () => {
+    return res.status(400).json({
+      status: 400,
+      message: 'Direct community creation is no longer supported. Please use /communities/request endpoint to submit a community creation request.'
+    });
+  });
+};
 
 export const getAllCommunities = async (req: Request, res: Response) => {
   return ServiceWrapper.executeWithErrorHandling(res, async () => {
@@ -82,6 +155,158 @@ export const getAllCommunities = async (req: Request, res: Response) => {
   });
 };
 
+export const getCommunityById = async (req: Request, res: Response) => {
+  return ServiceWrapper.executeWithErrorHandling(res, async () => {
+    const { id } = req.params;
+
+    const community = await contentService.getCommunityById(id);
+    if (!community) {
+      return res.status(404).json({
+        status: 404,
+        message: 'Community not found'
+      });
+    }
+
+    return res.status(200).json({
+      status: 200,
+      message: 'Community retrieved successfully',
+      data: community
+    });
+  });
+};
+
+// ============= MEMBER MANAGEMENT CONTROLLERS =============
+
+export const requestJoinCommunity = async (req: Request, res: Response) => {
+  return ServiceWrapper.executeWithErrorHandling(res, async () => {
+    let { error, value } = join_community_validator(req.body);
+    if (error) {
+      throw new Error(`${error.message}`);
+    }
+
+    const result = await contentService.requestToJoinCommunity({
+      communityId: value.community_id,
+      userId: value.user_id
+    });
+
+    // Check if it was auto-approved (system LGA community)
+    const message = result.status === 'APPROVED'
+      ? 'You have successfully joined the community'
+      : 'Join request submitted. Please wait for admin approval.';
+
+    return res.status(200).json({
+      status: 200,
+      message,
+      data: result
+    });
+  });
+};
+
+export const getPendingMemberRequests = async (req: Request, res: Response) => {
+  return ServiceWrapper.executeWithErrorHandling(res, async () => {
+    const { id } = req.params;
+    const { adminId } = req.query;
+
+    if (!adminId) {
+      return res.status(400).json({
+        status: 400,
+        message: 'adminId query parameter is required'
+      });
+    }
+
+    const requests = await contentService.getPendingJoinRequests(id, adminId as string);
+    return res.status(200).json({
+      status: 200,
+      message: 'Pending join requests retrieved successfully',
+      data: requests
+    });
+  });
+};
+
+export const approveMemberRequest = async (req: Request, res: Response) => {
+  return ServiceWrapper.executeWithErrorHandling(res, async () => {
+    const { id, userId } = req.params;
+    const { adminId } = req.body;
+
+    let { error, value } = approve_member_validator({
+      communityId: id,
+      userId,
+      adminId
+    });
+    if (error) {
+      throw new Error(`${error.message}`);
+    }
+
+    const result = await contentService.approveMemberRequest(value);
+    return res.status(200).json({
+      status: 200,
+      message: 'Member request approved successfully',
+      data: result
+    });
+  });
+};
+
+export const rejectMemberRequest = async (req: Request, res: Response) => {
+  return ServiceWrapper.executeWithErrorHandling(res, async () => {
+    const { id, userId } = req.params;
+    const { adminId } = req.body;
+
+    let { error, value } = reject_member_validator({
+      communityId: id,
+      userId,
+      adminId
+    });
+    if (error) {
+      throw new Error(`${error.message}`);
+    }
+
+    const result = await contentService.rejectMemberRequest(value);
+    return res.status(200).json({
+      status: 200,
+      message: 'Member request rejected',
+      data: result
+    });
+  });
+};
+
+export const getUserCommunities = async (req: Request, res: Response) => {
+  return ServiceWrapper.executeWithErrorHandling(res, async () => {
+    const { userId } = req.params;
+    const memberships = await contentService.getUserMemberships(userId);
+    return res.status(200).json({
+      status: 200,
+      message: 'User communities retrieved successfully',
+      data: memberships
+    });
+  });
+};
+
+export const removeCommunityMember = async (req: Request, res: Response) => {
+  return ServiceWrapper.executeWithErrorHandling(res, async () => {
+    const { id, userId } = req.params;
+    const { adminId } = req.body;
+
+    if (!adminId) {
+      return res.status(400).json({
+        status: 400,
+        message: 'adminId is required in request body'
+      });
+    }
+
+    await contentService.removeMember(id, userId, adminId);
+    return res.status(200).json({
+      status: 200,
+      message: 'Member removed successfully'
+    });
+  });
+};
+
+// Kept for backward compatibility
+export const joinCommunity = async (req: Request, res: Response) => {
+  return requestJoinCommunity(req, res);
+};
+
+// ============= EVENT CONTROLLERS =============
 
 export const createEvent = async (req: Request, res: Response) => {
   return ServiceWrapper.executeWithErrorHandling(res, async () => {
@@ -143,27 +368,6 @@ export const getEventById = async (req: Request, res: Response) => {
   });
 };
 
-export const getCommunityById = async (req: Request, res: Response) => {
-  return ServiceWrapper.executeWithErrorHandling(res, async () => {
-    const { id } = req.params;
-
-    const community = await contentService.getCommunityById(id);
-    if (!community) {
-      return res.status(404).json({
-        status: 404,
-        message: 'Community not found'
-      });
-    }
-
-    return res.status(200).json({
-      status: 200,
-      message: 'Community retrieved successfully',
-      data: community
-    });
-  });
-};
-
-
 export const getAllEvents = async (req: Request, res: Response) => {
   return ServiceWrapper.executeWithErrorHandling(res, async () => {
     const { title } = req.query;
@@ -177,6 +381,7 @@ export const getAllEvents = async (req: Request, res: Response) => {
   });
 };
 
+// ============= POST CONTROLLERS =============
 
 export const createPost = async (req: Request, res: Response) => {
   return ServiceWrapper.executeWithErrorHandling(res, async () => {
@@ -214,93 +419,10 @@ export const getPostsByCommunity = (req: Request, res: Response) => {
   });
 };
 
-
-export const likePost = (req: Request, res: Response) => {
-  return ServiceWrapper.executeWithErrorHandling(res, async () => {
-    let { error, value } = like_post_validator(req.body);
-    if (error) throw new Error(`${error.message}`);
-
-    const result = await contentService.likePost(value.user_id, value.post_id);
-    return res.status(200).json({ status: 200, message: 'Like toggled', data: result });
-  });
-};
-
-export const likeComment = (req: Request, res: Response) => {
-  return ServiceWrapper.executeWithErrorHandling(res, async () => {
-    let { error, value } = like_comment_validator(req.body);
-    if (error) throw new Error(`${error.message}`);
-
-    const result = await contentService.likeComment(value.user_id, value.comment_id);
-    return res.status(200).json({ status: 200, message: 'Like toggled', data: result });
-  });
-};
-
-
-export const addComment = (req: Request, res: Response) => {
-  return ServiceWrapper.executeWithErrorHandling(res, async () => {
-    let { error, value } = add_comment_validator(req.body);
-    if (error) throw new Error(`${error.message}`);
-
-    const comment = await contentService.addComment(value);
-    return res.status(201).json({ status: 201, message: 'Comment added successfully', data: comment });
-  });
-};
-
-export const updatePost = (req: Request, res: Response) => {
-  return ServiceWrapper.executeWithErrorHandling(res, async () => {
-    let { error, value } = update_post_validator(req.body);
-    if (error) throw new Error(`${error.message}`);
-
-    const { post_id } = req.params;
-    const updatedPost = await contentService.updatePost(post_id, value);
-    return res.status(200).json({ status: 200, message: 'Post updated successfully', data: updatedPost });
-  });
-};
-
-
 export const getAllPosts = (req: Request, res: Response) => {
   return ServiceWrapper.executeWithErrorHandling(res, async () => {
     const posts = await contentService.getAllPost();
     return res.status(200).json({ status: 200, data: posts });
-  });
-};
-
-export const getPostLikeCount = (req: Request, res: Response) => {
-  return ServiceWrapper.executeWithErrorHandling(res, async () => {
-    const { post_id } = req.params;
-    const count = await contentService.getPostLikeCount(post_id);
-    return res.status(200).json({ status: 200, data: count });
-  });
-};
-
-// Get Comment Like Count
-export const getCommentLikeCount = (req: Request, res: Response) => {
-  return ServiceWrapper.executeWithErrorHandling(res, async () => {
-    const { comment_id } = req.params;
-    const count = await contentService.getCommentLikeCount(comment_id);
-    return res.status(200).json({ status: 200, data: count });
-  });
-};
-
-// Get All Comments By Post ID
-export const getAllCommentsByPostId = (req: Request, res: Response) => {
-  return ServiceWrapper.executeWithErrorHandling(res, async () => {
-    const { post_id } = req.params;
-    const comments = await contentService.getAllCommentsByPostId(post_id);
-    return res.status(200).json({ status: 200, data: comments });
-  });
-};
-
-// Search Post
-export const searchPost = (req: Request, res: Response) => {
-  console.log('Search Post Request:', req.query);
-  return ServiceWrapper.executeWithErrorHandling(res, async () => {
-   const {query} = req.query;
-    if (!query || typeof query !== 'string') {
-      return res.status(400).json({ status: 400, message: 'Invalid search query' });
-    }
-    const result = await contentService.searchPost(query);
-    return res.status(200).json({ status: 200, data: result });
   });
 };
 
@@ -330,7 +452,17 @@ export const getPostCount = (req: Request, res: Response) => {
   });
 };
 
-// Delete Post
+export const updatePost = (req: Request, res: Response) => {
+  return ServiceWrapper.executeWithErrorHandling(res, async () => {
+    let { error, value } = update_post_validator(req.body);
+    if (error) throw new Error(`${error.message}`);
+
+    const { post_id } = req.params;
+    const updatedPost = await contentService.updatePost(post_id, value);
+    return res.status(200).json({ status: 200, message: 'Post updated successfully', data: updatedPost });
+  });
+};
+
 export const deletePost = (req: Request, res: Response) => {
   return ServiceWrapper.executeWithErrorHandling(res, async () => {
     const { post_id } = req.params;
@@ -339,11 +471,80 @@ export const deletePost = (req: Request, res: Response) => {
   });
 };
 
-// Delete Comment
+export const searchPost = (req: Request, res: Response) => {
+  console.log('Search Post Request:', req.query);
+  return ServiceWrapper.executeWithErrorHandling(res, async () => {
+    const { query } = req.query;
+    if (!query || typeof query !== 'string') {
+      return res.status(400).json({ status: 400, message: 'Invalid search query' });
+    }
+    const result = await contentService.searchPost(query);
+    return res.status(200).json({ status: 200, data: result });
+  });
+};
+
+// ============= COMMENT CONTROLLERS =============
+
+export const addComment = (req: Request, res: Response) => {
+  return ServiceWrapper.executeWithErrorHandling(res, async () => {
+    let { error, value } = add_comment_validator(req.body);
+    if (error) throw new Error(`${error.message}`);
+
+    const comment = await contentService.addComment(value);
+    return res.status(201).json({ status: 201, message: 'Comment added successfully', data: comment });
+  });
+};
+
+export const getAllCommentsByPostId = (req: Request, res: Response) => {
+  return ServiceWrapper.executeWithErrorHandling(res, async () => {
+    const { post_id } = req.params;
+    const comments = await contentService.getAllCommentsByPostId(post_id);
+    return res.status(200).json({ status: 200, data: comments });
+  });
+};
+
 export const deleteComment = (req: Request, res: Response) => {
   return ServiceWrapper.executeWithErrorHandling(res, async () => {
     const { comment_id } = req.params;
     await contentService.deleteComment(comment_id);
     return res.status(200).json({ status: 200, message: 'Comment deleted successfully' });
+  });
+};
+
+// ============= LIKE CONTROLLERS =============
+
+export const likePost = (req: Request, res: Response) => {
+  return ServiceWrapper.executeWithErrorHandling(res, async () => {
+    let { error, value } = like_post_validator(req.body);
+    if (error) throw new Error(`${error.message}`);
+
+    const result = await contentService.likePost(value.user_id, value.post_id);
+    return res.status(200).json({ status: 200, message: 'Like toggled', data: result });
+  });
+};
+
+export const likeComment = (req: Request, res: Response) => {
+  return ServiceWrapper.executeWithErrorHandling(res, async () => {
+    let { error, value } = like_comment_validator(req.body);
+    if (error) throw new Error(`${error.message}`);
+
+    const result = await contentService.likeComment(value.user_id, value.comment_id);
+    return res.status(200).json({ status: 200, message: 'Like toggled', data: result });
+  });
+};
+
+export const getPostLikeCount = (req: Request, res: Response) => {
+  return ServiceWrapper.executeWithErrorHandling(res, async () => {
+    const { post_id } = req.params;
+    const count = await contentService.getPostLikeCount(post_id);
+    return res.status(200).json({ status: 200, data: count });
+  });
+};
+
+export const getCommentLikeCount = (req: Request, res: Response) => {
+  return ServiceWrapper.executeWithErrorHandling(res, async () => {
+    const { comment_id } = req.params;
+    const count = await contentService.getCommentLikeCount(comment_id);
+    return res.status(200).json({ status: 200, data: count });
   });
 };

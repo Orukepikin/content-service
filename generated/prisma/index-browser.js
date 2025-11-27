@@ -125,10 +125,39 @@ exports.Prisma.CommunityScalarFieldEnum = {
   name: 'name',
   description: 'description',
   location: 'location',
-  members: 'members',
+  state: 'state',
+  lga: 'lga',
+  communityType: 'communityType',
+  status: 'status',
+  createdBy: 'createdBy',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  user_id: 'user_id'
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.CommunityRequestScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  location: 'location',
+  state: 'state',
+  lga: 'lga',
+  requestedBy: 'requestedBy',
+  status: 'status',
+  rejectionReason: 'rejectionReason',
+  approvedBy: 'approvedBy',
+  communityId: 'communityId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.CommunityMemberScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  communityId: 'communityId',
+  role: 'role',
+  status: 'status',
+  joinedAt: 'joinedAt',
+  requestedAt: 'requestedAt'
 };
 
 exports.Prisma.PostScalarFieldEnum = {
@@ -188,10 +217,39 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
+exports.CommunityType = exports.$Enums.CommunityType = {
+  SYSTEM_LGA: 'SYSTEM_LGA',
+  USER_CREATED: 'USER_CREATED'
+};
 
+exports.CommunityStatus = exports.$Enums.CommunityStatus = {
+  ACTIVE: 'ACTIVE',
+  PENDING: 'PENDING',
+  REJECTED: 'REJECTED',
+  ARCHIVED: 'ARCHIVED'
+};
+
+exports.RequestStatus = exports.$Enums.RequestStatus = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
+};
+
+exports.MemberRole = exports.$Enums.MemberRole = {
+  ADMIN: 'ADMIN',
+  MEMBER: 'MEMBER'
+};
+
+exports.MemberStatus = exports.$Enums.MemberStatus = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
+};
 
 exports.Prisma.ModelName = {
   Community: 'Community',
+  CommunityRequest: 'CommunityRequest',
+  CommunityMember: 'CommunityMember',
   Post: 'Post',
   Comment: 'Comment',
   Like: 'Like',

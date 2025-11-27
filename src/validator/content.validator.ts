@@ -45,8 +45,42 @@ export const like_post_validator = (data: any) => {
     });
 
     return schema.validate(data);
-  };
+};
 
+// Updated for new community request system
+export const create_community_request_validator = (data: any) => {
+    const schema = Joi.object({
+        requestedBy: Joi.string().uuid().required(),
+        name: Joi.string().min(3).max(100).required(),
+        location: Joi.string().optional().allow(null, ''),
+        description: Joi.string().optional().allow(null, ''),
+        state: Joi.string().optional().allow(null, ''),
+        lga: Joi.string().optional().allow(null, ''),
+    });
+
+    return schema.validate(data);
+};
+
+export const approve_community_request_validator = (data: any) => {
+    const schema = Joi.object({
+        requestId: Joi.string().uuid().required(),
+        approvedBy: Joi.string().uuid().required(),
+    });
+
+    return schema.validate(data);
+};
+
+export const reject_community_request_validator = (data: any) => {
+    const schema = Joi.object({
+        requestId: Joi.string().uuid().required(),
+        rejectedBy: Joi.string().uuid().required(),
+        reason: Joi.string().min(10).required(),
+    });
+
+    return schema.validate(data);
+};
+
+// Kept for backward compatibility but will throw error
 export const create_community_validator = (data: any) => {
     const schema = Joi.object({
         user_id: Joi.string().uuid().required(),
@@ -66,6 +100,24 @@ export const join_community_validator = (data: any) => {
     return schema.validate(data);
 };
 
+export const approve_member_validator = (data: any) => {
+    const schema = Joi.object({
+        communityId: Joi.string().uuid().required(),
+        userId: Joi.string().uuid().required(),
+        adminId: Joi.string().uuid().required(),
+    });
+    return schema.validate(data);
+};
+
+export const reject_member_validator = (data: any) => {
+    const schema = Joi.object({
+        communityId: Joi.string().uuid().required(),
+        userId: Joi.string().uuid().required(),
+        adminId: Joi.string().uuid().required(),
+    });
+    return schema.validate(data);
+};
+
 export const like_comment_validator = (data: any) => {
     const schema = Joi.object({
         user_id: Joi.string().uuid().required(),
@@ -73,9 +125,7 @@ export const like_comment_validator = (data: any) => {
     });
 
     return schema.validate(data);
-  };
-
-
+};
 
 export const update_post_validator = (data: any) => {
     const schema = Joi.object({
@@ -86,7 +136,7 @@ export const update_post_validator = (data: any) => {
     });
 
     return schema.validate(data);
-  };
+};
 
 export const create_event_validator = (data: any) =>
     Joi.object({
@@ -115,8 +165,4 @@ export const search_post_validator = (data: any) => {
     });
 
     return schema.validate(data);
-  };
-
-
-
-
+};
