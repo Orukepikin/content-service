@@ -1,5 +1,6 @@
 import { db } from "../utils/db.connection.utils";
 import { uploadToCloudinary } from '../utils/cloudinary';
+import { RequestStatus } from "../../generated/prisma";
 
 interface CreatePostDto {
     title: string;
@@ -217,11 +218,25 @@ export const contentService = {
         });
     },
 
-    getPendingCommunityRequests: async () => {
-        return await db.communityRequest.findMany({
-            where: { status: 'PENDING' },
-            orderBy: { createdAt: 'desc' },
-        });
+   getPendingCommunityRequests: async ({ page, pageSize }: { page: number; pageSize: number }) => {
+   const where = { status: RequestStatus.PENDING };
+    const [items, totalItems] = await Promise.all([
+        db.communityRequest.findMany({
+        where,
+        orderBy: { createdAt: 'desc' },
+        skip: (page - 1) * pageSize,
+        take: pageSize,
+        }),
+        db.communityRequest.count({ where }),
+    ]);
+
+    return {
+        items,
+        page,
+        pageSize,
+        totalItems,
+        totalPages: Math.ceil(totalItems / pageSize) || 1,
+    };
     },
 
     getUserCommunityRequests: async (userId: string) => {
