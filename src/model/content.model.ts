@@ -20,6 +20,7 @@ interface CreateCommunityDto {
 
 interface CreateCommunityRequestDto {
     name: string;
+    email:string;
     description?: string;
     location?: string;
     state?: string;
@@ -126,6 +127,7 @@ export const contentService = {
         return await db.communityRequest.create({
             data: {
                 name: data.name,
+                email: data.email,
                 description: data.description,
                 location: data.location,
                 state: data.state,

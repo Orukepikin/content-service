@@ -141,6 +141,7 @@ exports.Prisma.CommunityRequestScalarFieldEnum = {
   location: 'location',
   state: 'state',
   lga: 'lga',
+  email: 'email',
   requestedBy: 'requestedBy',
   status: 'status',
   rejectionReason: 'rejectionReason',

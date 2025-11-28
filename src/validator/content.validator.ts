@@ -55,6 +55,7 @@ export const create_community_request_validator = (data: any) => {
         location: Joi.string().optional().allow(null, ''),
         description: Joi.string().optional().allow(null, ''),
         state: Joi.string().optional().allow(null, ''),
+        email: Joi.string().email().required(),
         lga: Joi.string().optional().allow(null, ''),
     });
 

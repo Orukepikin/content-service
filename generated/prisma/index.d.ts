@@ -2796,6 +2796,7 @@ export namespace Prisma {
     location: string | null
     state: string | null
     lga: string | null
+    email: string | null
     requestedBy: string | null
     status: $Enums.RequestStatus | null
     rejectionReason: string | null
@@ -2812,6 +2813,7 @@ export namespace Prisma {
     location: string | null
     state: string | null
     lga: string | null
+    email: string | null
     requestedBy: string | null
     status: $Enums.RequestStatus | null
     rejectionReason: string | null
@@ -2828,6 +2830,7 @@ export namespace Prisma {
     location: number
     state: number
     lga: number
+    email: number
     requestedBy: number
     status: number
     rejectionReason: number
@@ -2846,6 +2849,7 @@ export namespace Prisma {
     location?: true
     state?: true
     lga?: true
+    email?: true
     requestedBy?: true
     status?: true
     rejectionReason?: true
@@ -2862,6 +2866,7 @@ export namespace Prisma {
     location?: true
     state?: true
     lga?: true
+    email?: true
     requestedBy?: true
     status?: true
     rejectionReason?: true
@@ -2878,6 +2883,7 @@ export namespace Prisma {
     location?: true
     state?: true
     lga?: true
+    email?: true
     requestedBy?: true
     status?: true
     rejectionReason?: true
@@ -2967,6 +2973,7 @@ export namespace Prisma {
     location: string | null
     state: string | null
     lga: string | null
+    email: string
     requestedBy: string
     status: $Enums.RequestStatus
     rejectionReason: string | null
@@ -3000,6 +3007,7 @@ export namespace Prisma {
     location?: boolean
     state?: boolean
     lga?: boolean
+    email?: boolean
     requestedBy?: boolean
     status?: boolean
     rejectionReason?: boolean
@@ -3016,6 +3024,7 @@ export namespace Prisma {
     location?: boolean
     state?: boolean
     lga?: boolean
+    email?: boolean
     requestedBy?: boolean
     status?: boolean
     rejectionReason?: boolean
@@ -3032,6 +3041,7 @@ export namespace Prisma {
     location?: boolean
     state?: boolean
     lga?: boolean
+    email?: boolean
     requestedBy?: boolean
     status?: boolean
     rejectionReason?: boolean
@@ -3048,6 +3058,7 @@ export namespace Prisma {
     location?: boolean
     state?: boolean
     lga?: boolean
+    email?: boolean
     requestedBy?: boolean
     status?: boolean
     rejectionReason?: boolean
@@ -3057,7 +3068,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type CommunityRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "location" | "state" | "lga" | "requestedBy" | "status" | "rejectionReason" | "approvedBy" | "communityId" | "createdAt" | "updatedAt", ExtArgs["result"]["communityRequest"]>
+  export type CommunityRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "location" | "state" | "lga" | "email" | "requestedBy" | "status" | "rejectionReason" | "approvedBy" | "communityId" | "createdAt" | "updatedAt", ExtArgs["result"]["communityRequest"]>
 
   export type $CommunityRequestPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "CommunityRequest"
@@ -3069,6 +3080,7 @@ export namespace Prisma {
       location: string | null
       state: string | null
       lga: string | null
+      email: string
       requestedBy: string
       status: $Enums.RequestStatus
       rejectionReason: string | null
@@ -3505,6 +3517,7 @@ export namespace Prisma {
     readonly location: FieldRef<"CommunityRequest", 'String'>
     readonly state: FieldRef<"CommunityRequest", 'String'>
     readonly lga: FieldRef<"CommunityRequest", 'String'>
+    readonly email: FieldRef<"CommunityRequest", 'String'>
     readonly requestedBy: FieldRef<"CommunityRequest", 'String'>
     readonly status: FieldRef<"CommunityRequest", 'RequestStatus'>
     readonly rejectionReason: FieldRef<"CommunityRequest", 'String'>
@@ -9501,6 +9514,7 @@ export namespace Prisma {
     location: 'location',
     state: 'state',
     lga: 'lga',
+    email: 'email',
     requestedBy: 'requestedBy',
     status: 'status',
     rejectionReason: 'rejectionReason',
@@ -9823,6 +9837,7 @@ export namespace Prisma {
     location?: StringNullableFilter<"CommunityRequest"> | string | null
     state?: StringNullableFilter<"CommunityRequest"> | string | null
     lga?: StringNullableFilter<"CommunityRequest"> | string | null
+    email?: StringFilter<"CommunityRequest"> | string
     requestedBy?: StringFilter<"CommunityRequest"> | string
     status?: EnumRequestStatusFilter<"CommunityRequest"> | $Enums.RequestStatus
     rejectionReason?: StringNullableFilter<"CommunityRequest"> | string | null
@@ -9839,6 +9854,7 @@ export namespace Prisma {
     location?: SortOrderInput | SortOrder
     state?: SortOrderInput | SortOrder
     lga?: SortOrderInput | SortOrder
+    email?: SortOrder
     requestedBy?: SortOrder
     status?: SortOrder
     rejectionReason?: SortOrderInput | SortOrder
@@ -9859,6 +9875,7 @@ export namespace Prisma {
     location?: StringNullableFilter<"CommunityRequest"> | string | null
     state?: StringNullableFilter<"CommunityRequest"> | string | null
     lga?: StringNullableFilter<"CommunityRequest"> | string | null
+    email?: StringFilter<"CommunityRequest"> | string
     requestedBy?: StringFilter<"CommunityRequest"> | string
     status?: EnumRequestStatusFilter<"CommunityRequest"> | $Enums.RequestStatus
     rejectionReason?: StringNullableFilter<"CommunityRequest"> | string | null
@@ -9874,6 +9891,7 @@ export namespace Prisma {
     location?: SortOrderInput | SortOrder
     state?: SortOrderInput | SortOrder
     lga?: SortOrderInput | SortOrder
+    email?: SortOrder
     requestedBy?: SortOrder
     status?: SortOrder
     rejectionReason?: SortOrderInput | SortOrder
@@ -9896,6 +9914,7 @@ export namespace Prisma {
     location?: StringNullableWithAggregatesFilter<"CommunityRequest"> | string | null
     state?: StringNullableWithAggregatesFilter<"CommunityRequest"> | string | null
     lga?: StringNullableWithAggregatesFilter<"CommunityRequest"> | string | null
+    email?: StringWithAggregatesFilter<"CommunityRequest"> | string
     requestedBy?: StringWithAggregatesFilter<"CommunityRequest"> | string
     status?: EnumRequestStatusWithAggregatesFilter<"CommunityRequest"> | $Enums.RequestStatus
     rejectionReason?: StringNullableWithAggregatesFilter<"CommunityRequest"> | string | null
@@ -10376,6 +10395,7 @@ export namespace Prisma {
     location?: string | null
     state?: string | null
     lga?: string | null
+    email: string
     requestedBy: string
     status?: $Enums.RequestStatus
     rejectionReason?: string | null
@@ -10392,6 +10412,7 @@ export namespace Prisma {
     location?: string | null
     state?: string | null
     lga?: string | null
+    email: string
     requestedBy: string
     status?: $Enums.RequestStatus
     rejectionReason?: string | null
@@ -10408,6 +10429,7 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     state?: NullableStringFieldUpdateOperationsInput | string | null
     lga?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
     requestedBy?: StringFieldUpdateOperationsInput | string
     status?: EnumRequestStatusFieldUpdateOperationsInput | $Enums.RequestStatus
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
@@ -10424,6 +10446,7 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     state?: NullableStringFieldUpdateOperationsInput | string | null
     lga?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
     requestedBy?: StringFieldUpdateOperationsInput | string
     status?: EnumRequestStatusFieldUpdateOperationsInput | $Enums.RequestStatus
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
@@ -10440,6 +10463,7 @@ export namespace Prisma {
     location?: string | null
     state?: string | null
     lga?: string | null
+    email: string
     requestedBy: string
     status?: $Enums.RequestStatus
     rejectionReason?: string | null
@@ -10456,6 +10480,7 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     state?: NullableStringFieldUpdateOperationsInput | string | null
     lga?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
     requestedBy?: StringFieldUpdateOperationsInput | string
     status?: EnumRequestStatusFieldUpdateOperationsInput | $Enums.RequestStatus
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
@@ -10472,6 +10497,7 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     state?: NullableStringFieldUpdateOperationsInput | string | null
     lga?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
     requestedBy?: StringFieldUpdateOperationsInput | string
     status?: EnumRequestStatusFieldUpdateOperationsInput | $Enums.RequestStatus
     rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
@@ -11068,6 +11094,7 @@ export namespace Prisma {
     location?: SortOrder
     state?: SortOrder
     lga?: SortOrder
+    email?: SortOrder
     requestedBy?: SortOrder
     status?: SortOrder
     rejectionReason?: SortOrder
@@ -11084,6 +11111,7 @@ export namespace Prisma {
     location?: SortOrder
     state?: SortOrder
     lga?: SortOrder
+    email?: SortOrder
     requestedBy?: SortOrder
     status?: SortOrder
     rejectionReason?: SortOrder
@@ -11100,6 +11128,7 @@ export namespace Prisma {
     location?: SortOrder
     state?: SortOrder
     lga?: SortOrder
+    email?: SortOrder
     requestedBy?: SortOrder
     status?: SortOrder
     rejectionReason?: SortOrder

@@ -48,6 +48,7 @@ model CommunityRequest {
   location        String?
   state           String?
   lga             String?
+  email           String
   requestedBy     String
   status          RequestStatus @default(PENDING)
   rejectionReason String?
