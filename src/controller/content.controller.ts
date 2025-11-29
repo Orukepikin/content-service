@@ -5,7 +5,6 @@ import {
   approve_community_request_validator,
   approve_member_validator,
   create_community_request_validator,
-  create_community_validator,
   create_event_validator,
   create_post_validator,
   join_community_validator,
@@ -13,10 +12,8 @@ import {
   like_post_validator,
   reject_community_request_validator,
   reject_member_validator,
-  search_post_validator,
   update_event_validator,
   update_post_validator,
-  upload_media_validator
 } from '../validator/content.validator';
 import { contentService } from '../model/content.model';
 
@@ -148,8 +145,15 @@ export const createCommunity = async (req: Request, res: Response) => {
 
 export const getAllCommunities = async (req: Request, res: Response) => {
   return ServiceWrapper.executeWithErrorHandling(res, async () => {
-    const { name } = req.query;
-    const communities = await contentService.getAllCommunities(name as string);
+    const { name, page, limit } = req.query;
+    const pageNumber = Math.max(parseInt(page as string, 10) || 1, 1);
+    const pageSize = Math.max(parseInt(limit as string, 10) || 10, 1);
+
+    const communities = await contentService.getAllCommunities({
+      name: name as string,
+      page: pageNumber,
+      pageSize,
+    });
 
     return res.status(200).json({
       status: 200,

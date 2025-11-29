@@ -198,42 +198,50 @@ Retrieve all community requests submitted by a specific user.
 ## Community Endpoints
 
 ### 6. Get All Communities
-Retrieve all active communities with optional name filter.
+Retrieve active communities with optional name filter and pagination.
 
-**Endpoint:** `GET /communities?name={search_term}`
+**Endpoint:** `GET /communities?name={search_term}&page={pageNumber}&limit={pageSize}`
 
 **Query Parameters:**
 - `name` (optional) - Filter communities by name (case-insensitive)
+- `page` (optional) - Page number (defaults to `1`)
+- `limit` (optional) - Page size (defaults to `10`)
 
 **Success Response (200):**
 ```json
 {
   "status": 200,
   "message": "Communities retrieved successfully",
-  "data": [
-    {
-      "id": "community-uuid-1",
-      "name": "Ikeja, Lagos",
-      "description": "Official community for Ikeja Local Government Area...",
-      "location": "Ikeja, Lagos, Nigeria",
-      "state": "Lagos",
-      "lga": "Ikeja",
-      "communityType": "SYSTEM_LGA",
-      "status": "ACTIVE",
-      "membersCount": 1523,
-      "createdAt": "2025-11-27T10:00:00Z"
-    },
-    {
-      "id": "community-uuid-2",
-      "name": "Tech Enthusiasts Lagos",
-      "description": "A community for tech lovers",
-      "communityType": "USER_CREATED",
-      "status": "ACTIVE",
-      "membersCount": 45,
-      "createdBy": "user-uuid",
-      "createdAt": "2025-11-27T12:00:00Z"
-    }
-  ]
+  "data": {
+    "items": [
+      {
+        "id": "community-uuid-1",
+        "name": "Ikeja, Lagos",
+        "description": "Official community for Ikeja Local Government Area...",
+        "location": "Ikeja, Lagos, Nigeria",
+        "state": "Lagos",
+        "lga": "Ikeja",
+        "communityType": "SYSTEM_LGA",
+        "status": "ACTIVE",
+        "membersCount": 1523,
+        "createdAt": "2025-11-27T10:00:00Z"
+      },
+      {
+        "id": "community-uuid-2",
+        "name": "Tech Enthusiasts Lagos",
+        "description": "A community for tech lovers",
+        "communityType": "USER_CREATED",
+        "status": "ACTIVE",
+        "membersCount": 45,
+        "createdBy": "user-uuid",
+        "createdAt": "2025-11-27T12:00:00Z"
+      }
+    ],
+    "page": 1,
+    "pageSize": 10,
+    "totalItems": 200,
+    "totalPages": 20
+  }
 }
 ```
 

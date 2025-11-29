@@ -1,6 +1,6 @@
 import { db } from "../utils/db.connection.utils";
 import { uploadToCloudinary } from '../utils/cloudinary';
-import { RequestStatus } from "../../generated/prisma";
+import { CommunityStatus, Prisma, RequestStatus } from "../../generated/prisma";
 
 interface CreatePostDto {
     title: string;
@@ -255,24 +255,39 @@ export const contentService = {
         throw new Error("Direct community creation is deprecated. Use createCommunityRequest instead.");
     },
 
-    getAllCommunities: async (name?: string) => {
-        return await db.community.findMany({
-            where: {
-                status: 'ACTIVE',
-                ...(name ? {
-                    name: {
-                        contains: name,
-                        mode: 'insensitive'
-                    }
-                } : {})
-            },
-            include: {
-                _count: {
-                    select: { members: true }
+    getAllCommunities: async ({ name, page, pageSize }: { name?: string; page: number; pageSize: number }) => {
+        const where: Prisma.CommunityWhereInput = {
+            status: CommunityStatus.ACTIVE,
+            ...(name ? {
+                name: {
+                    contains: name,
+                    mode: 'insensitive',
                 }
-            },
-            orderBy: { name: 'asc' }
-        });
+            } : {})
+        };
+
+        const [items, totalItems] = await Promise.all([
+            db.community.findMany({
+                where,
+                include: {
+                    _count: {
+                        select: { members: true }
+                    }
+                },
+                orderBy: { name: 'asc' },
+                skip: (page - 1) * pageSize,
+                take: pageSize,
+            }),
+            db.community.count({ where }),
+        ]);
+
+        return {
+            items,
+            page,
+            pageSize,
+            totalItems,
+            totalPages: Math.ceil(totalItems / pageSize) || 1,
+        };
     },
 
     getCommunityById: async (id: string) => {
