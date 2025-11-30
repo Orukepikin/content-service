@@ -35,7 +35,8 @@ import {
     approveMemberRequest,
     rejectMemberRequest,
     getUserCommunities,
-    removeCommunityMember
+    removeCommunityMember,
+    getAdminDashboard
 } from '../controller/content.controller';
 import { memoryUpload } from '../utils/multer';
 
@@ -93,5 +94,8 @@ router.put('/events/:id', updateEvent);
 router.delete('/events/:id', deleteEvent);
 router.get('/events/getAll', getAllEvents);
 router.get('/events/:id', getEventById);
+
+// ============= ADMIN ROUTES =============
+router.get('/admin/dashboard', getAdminDashboard);
 
 export default router;

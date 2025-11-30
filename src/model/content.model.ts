@@ -904,4 +904,49 @@ export const contentService = {
         });
         return { comment_id, likeCount: count };
     },
+
+    // ============= ADMIN DASHBOARD METHODS =============
+
+    getDashboardStats: async () => {
+        const [
+            totalCommunities,
+            totalActiveCommunities,
+            totalInactiveCommunities,
+            totalApprovedMembers,
+            totalUnapprovedMembers,
+            totalPendingRequests,
+        ] = await Promise.all([
+            // Count all communities
+            db.community.count(),
+            // Count active communities
+            db.community.count({
+                where: { status: 'ACTIVE' }
+            }),
+            // Count inactive communities (not ACTIVE)
+            db.community.count({
+                where: { status: { not: 'ACTIVE' } }
+            }),
+            // Count approved members
+            db.communityMember.count({
+                where: { status: 'APPROVED' }
+            }),
+            // Count unapproved/pending members
+            db.communityMember.count({
+                where: { status: 'PENDING' }
+            }),
+            // Count pending community creation requests
+            db.communityRequest.count({
+                where: { status: 'PENDING' }
+            }),
+        ]);
+
+        return {
+            totalCommunities,
+            totalActiveCommunities,
+            totalInactiveCommunities,
+            totalApprovedMembers,
+            totalUnapprovedMembers,
+            totalPendingRequests,
+        };
+    },
 };

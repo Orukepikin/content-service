@@ -517,9 +517,42 @@ Remove a member from the community.
 
 ---
 
+## Admin Dashboard Endpoint
+
+### 14. Get Admin Dashboard Statistics
+Retrieve aggregated statistics for the admin dashboard including community counts, member counts, and pending requests.
+
+**Endpoint:** `GET /admin/dashboard`
+
+**Success Response (200):**
+```json
+{
+  "status": 200,
+  "message": "Dashboard statistics retrieved successfully",
+  "data": {
+    "totalCommunities": 850,
+    "totalActiveCommunities": 825,
+    "totalInactiveCommunities": 25,
+    "totalApprovedMembers": 15420,
+    "totalUnapprovedMembers": 342,
+    "totalPendingRequests": 18
+  }
+}
+```
+
+**Response Fields:**
+- `totalCommunities` - Total count of all communities (all statuses)
+- `totalActiveCommunities` - Count of communities with ACTIVE status
+- `totalInactiveCommunities` - Count of communities with non-ACTIVE status (PENDING, REJECTED, ARCHIVED)
+- `totalApprovedMembers` - Count of all approved members across all communities
+- `totalUnapprovedMembers` - Count of pending member join requests across all communities  
+- `totalPendingRequests` - Count of pending community creation requests
+
+---
+
 ## Post Endpoints
 
-### 14. Create Post
+### 15. Create Post
 Create a new post in a community. User must be an approved member.
 
 **Endpoint:** `POST /posts/create`

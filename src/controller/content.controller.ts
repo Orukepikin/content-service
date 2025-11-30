@@ -556,3 +556,16 @@ export const getCommentLikeCount = (req: Request, res: Response) => {
     return res.status(200).json({ status: 200, data: count });
   });
 };
+
+// ============= ADMIN DASHBOARD CONTROLLER =============
+
+export const getAdminDashboard = async (req: Request, res: Response) => {
+  return ServiceWrapper.executeWithErrorHandling(res, async () => {
+    const stats = await contentService.getDashboardStats();
+    return res.status(200).json({
+      status: 200,
+      message: 'Dashboard statistics retrieved successfully',
+      data: stats
+    });
+  });
+};
