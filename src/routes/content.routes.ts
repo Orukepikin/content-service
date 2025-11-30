@@ -37,7 +37,8 @@ import {
     getUserCommunities,
     removeCommunityMember,
     getAdminDashboard,
-    notifyCommunityAdminForRequestApproval
+    notifyCommunityAdminForRequestApproval,
+    notifyMemberForJoinApproval
 } from '../controller/content.controller';
 import { memoryUpload } from '../utils/multer';
 
@@ -75,6 +76,7 @@ router.post('/communities/:id/members/:userId/approve', approveMemberRequest);
 router.post('/communities/:id/members/:userId/reject', rejectMemberRequest);
 router.delete('/communities/:id/members/:userId', removeCommunityMember);
 router.get('/communities/user/:userId/memberships', getUserCommunities);
+router.get('/communities/:id/members/:userId/notify-approval', notifyMemberForJoinApproval);
 
 // ============= MEDIA UPLOAD ROUTE =============
 router.post('/media/upload', memoryUpload.single('file'), uploadMedia);

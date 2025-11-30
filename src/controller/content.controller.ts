@@ -571,12 +571,24 @@ export const getAdminDashboard = async (req: Request, res: Response) => {
   });
 };
 
-
 export const notifyCommunityAdminForRequestApproval = async (req: Request, res: Response) => {
   return ServiceWrapper.executeWithErrorHandling(res, async () => {
     const { id } = req.params;
 
     const result = await contentService.notifyCommunityAdminForRequestApproval(id);
+    return res.status(200).json({
+      status: 200,
+      message: 'Notification details retrieved successfully',
+      data: result
+    });
+  });
+};
+
+export const notifyMemberForJoinApproval = async (req: Request, res: Response) => {
+  return ServiceWrapper.executeWithErrorHandling(res, async () => {
+    const { id, userId } = req.params;
+
+    const result = await contentService.notifyMemberForJoinApproval(id, userId);
     return res.status(200).json({
       status: 200,
       message: 'Notification details retrieved successfully',

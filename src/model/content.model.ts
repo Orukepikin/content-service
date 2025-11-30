@@ -985,4 +985,35 @@ export const contentService = {
             notificationMessage: `Congratulations! Your request to create "${request.name}" community has been approved.`,
         };
     },
+
+    notifyMemberForJoinApproval: async (communityId: string, userId: string) => {
+        const membership = await db.communityMember.findUnique({
+            where: {
+                userId_communityId: {
+                    userId,
+                    communityId,
+                },
+            },
+            include: {
+                community: true,
+            },
+        });
+
+        if (!membership) {
+            throw new Error("Membership record not found");
+        }
+
+        if (membership.status !== 'APPROVED') {
+            throw new Error("Your membership request has not been approved yet");
+        }
+
+        return {
+            userId: membership.userId,
+            communityId: membership.communityId,
+            communityName: membership.community.name,
+            role: membership.role,
+            joinedAt: membership.joinedAt,
+            notificationMessage: `Congratulations! Your request to join "${membership.community.name}" has been approved.`,
+        };
+    },
 };
