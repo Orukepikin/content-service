@@ -127,9 +127,46 @@ Reject a pending community creation request.
 }
 ```
 
+    "approvedBy": "admin-user-uuid"
+  }
+}
+```
+
 ---
 
-### 4. Get Pending Community Requests (Super Admin Only)
+### 4. Notify Community Admin of Approval
+Retrieve notification details for an approved community request.
+
+**Endpoint:** `POST /communities/requests/:id/notify-approval`
+
+**URL Parameters:**
+- `id` - Request ID
+
+**Success Response (200):**
+```json
+{
+  "status": 200,
+  "message": "Notification details retrieved successfully",
+  "data": {
+    "requestId": "request-uuid",
+    "requestedBy": "user-uuid",
+    "communityName": "Tech Enthusiasts Lagos",
+    "communityId": "community-uuid",
+    "approvedBy": "admin-user-uuid",
+    "approvalDate": "2025-11-27T12:00:00Z",
+    "community": {
+      "id": "community-uuid",
+      "name": "Tech Enthusiasts Lagos",
+      "status": "ACTIVE"
+    },
+    "notificationMessage": "Congratulations! Your request to create \"Tech Enthusiasts Lagos\" community has been approved."
+  }
+}
+```
+
+---
+
+### 5. Get Pending Community Requests (Super Admin Only)
 Retrieve all pending community creation requests.
 
 **Endpoint:** `GET /communities/requests/pending`

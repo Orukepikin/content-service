@@ -20,7 +20,7 @@ interface CreateCommunityDto {
 
 interface CreateCommunityRequestDto {
     name: string;
-    email:string;
+    email: string;
     description?: string;
     location?: string;
     state?: string;
@@ -197,6 +197,7 @@ export const contentService = {
         });
     },
 
+
     rejectCommunityRequest: async (data: RejectRequestDto) => {
         const request = await db.communityRequest.findUnique({
             where: { id: data.requestId },
@@ -220,25 +221,25 @@ export const contentService = {
         });
     },
 
-   getPendingCommunityRequests: async ({ page, pageSize }: { page: number; pageSize: number }) => {
-   const where = { status: RequestStatus.PENDING };
-    const [items, totalItems] = await Promise.all([
-        db.communityRequest.findMany({
-        where,
-        orderBy: { createdAt: 'desc' },
-        skip: (page - 1) * pageSize,
-        take: pageSize,
-        }),
-        db.communityRequest.count({ where }),
-    ]);
+    getPendingCommunityRequests: async ({ page, pageSize }: { page: number; pageSize: number }) => {
+        const where = { status: RequestStatus.PENDING };
+        const [items, totalItems] = await Promise.all([
+            db.communityRequest.findMany({
+                where,
+                orderBy: { createdAt: 'desc' },
+                skip: (page - 1) * pageSize,
+                take: pageSize,
+            }),
+            db.communityRequest.count({ where }),
+        ]);
 
-    return {
-        items,
-        page,
-        pageSize,
-        totalItems,
-        totalPages: Math.ceil(totalItems / pageSize) || 1,
-    };
+        return {
+            items,
+            page,
+            pageSize,
+            totalItems,
+            totalPages: Math.ceil(totalItems / pageSize) || 1,
+        };
     },
 
     getUserCommunityRequests: async (userId: string) => {
@@ -947,6 +948,41 @@ export const contentService = {
             totalApprovedMembers,
             totalUnapprovedMembers,
             totalPendingRequests,
+        };
+    },
+
+    // ============= NOTIFICATION METHODS =============
+
+    notifyCommunityAdminForRequestApproval: async (requestId: string) => {
+        const request = await db.communityRequest.findUnique({
+            where: { id: requestId },
+        });
+
+        if (!request) {
+            throw new Error("Community request not found");
+        }
+
+        if (request.status !== 'APPROVED') {
+            throw new Error("This request has not been approved yet");
+        }
+
+        if (!request.communityId) {
+            throw new Error("No community associated with this request");
+        }
+
+        const community = await db.community.findUnique({
+            where: { id: request.communityId },
+        });
+
+        return {
+            requestId: request.id,
+            requestedBy: request.requestedBy,
+            communityName: request.name,
+            communityId: request.communityId,
+            approvedBy: request.approvedBy,
+            approvalDate: request.updatedAt,
+            community: community,
+            notificationMessage: `Congratulations! Your request to create "${request.name}" community has been approved.`,
         };
     },
 };

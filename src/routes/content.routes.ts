@@ -36,7 +36,8 @@ import {
     rejectMemberRequest,
     getUserCommunities,
     removeCommunityMember,
-    getAdminDashboard
+    getAdminDashboard,
+    notifyCommunityAdminForRequestApproval
 } from '../controller/content.controller';
 import { memoryUpload } from '../utils/multer';
 
@@ -59,6 +60,7 @@ router.post('/communities/requests/:id/approve', approveCommunityRequest);
 router.post('/communities/requests/:id/reject', rejectCommunityRequest);
 router.get('/communities/requests/pending', getPendingCommunityRequests);
 router.get('/communities/requests/user/:userId', getUserCommunityRequests);
+router.get('/communities/requests/:id/notify-approval', notifyCommunityAdminForRequestApproval);
 
 // ============= COMMUNITY ROUTES =============
 router.post('/communities/create', createCommunity); // Now returns error - use /communities/request instead
