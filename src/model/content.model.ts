@@ -613,91 +613,69 @@ export const contentService = {
             ...(status ? { status } : {}),
         };
 
-        // If search is provided, we need to fetch all members first, then filter by user details
-        if (search && search.trim()) {
-            const allMembers = await db.communityMember.findMany({
-                where,
-                include: {
-                    community: {
-                        select: {
-                            id: true,
-                            name: true,
-                            description: true,
-                        },
+        // Fetch all matching members (paginated AFTER search)
+        const allMembers = await db.communityMember.findMany({
+            where,
+            include: {
+                community: {
+                    select: {
+                        id: true,
+                        name: true,
+                        description: true,
                     },
                 },
-                orderBy: [
-                    { role: 'desc' }, // ADMIN first
-                    { joinedAt: 'desc' }, // Then by join date
-                ],
-            });
+            },
+            orderBy: [
+                { role: 'desc' },     // ADMIN first
+                { joinedAt: 'desc' }  // Then by join date
+            ]
+        });
 
-            // Fetch user details for all members
-            const userIds = allMembers.map(member => member.userId);
-            const userMap = await fetchMultipleUserDetails(userIds, token);
+        // Fetch user details for ALL members
+        const userIds = allMembers.map(m => m.userId);
+        const userMap = await fetchMultipleUserDetails(userIds, token);
 
-            // Filter members based on search term
+        // Merge user details into members
+        const enrichedMembers = allMembers.map(member => ({
+            ...member,
+            user: userMap[member.userId] || null  // always return user details if exists
+        }));
+
+        // If search term is applied, filter enriched members
+        let filteredMembers = enrichedMembers;
+
+        if (search && search.trim().length > 0) {
             const searchLower = search.toLowerCase().trim();
-            const filteredMembers = allMembers.filter(member => {
-                const user = userMap[member.userId];
+
+            filteredMembers = enrichedMembers.filter(member => {
+                const user = member.user;
                 if (!user) return false;
 
-                const fullName = user.fullName?.toLowerCase() || '';
-                const email = user.email?.toLowerCase() || '';
-                const userId = user.userId?.toLowerCase() || '';
-
-                return fullName.includes(searchLower) ||
-                    email.includes(searchLower) ||
-                    userId.includes(searchLower);
+                return (
+                    (user.fullName?.toLowerCase() || '').includes(searchLower) ||
+                    (user.email?.toLowerCase() || '').includes(searchLower) ||
+                    (user.userId?.toLowerCase() || '').includes(searchLower)
+                );
             });
-
-            // Apply pagination to filtered results
-            const totalItems = filteredMembers.length;
-            const paginatedMembers = filteredMembers.slice(
-                (page - 1) * pageSize,
-                page * pageSize
-            );
-
-            return {
-                items: paginatedMembers,
-                page,
-                pageSize,
-                totalItems,
-                totalPages: Math.ceil(totalItems / pageSize) || 1,
-            };
         }
 
-        // No search - use original logic
-        const [items, totalItems] = await Promise.all([
-            db.communityMember.findMany({
-                where,
-                include: {
-                    community: {
-                        select: {
-                            id: true,
-                            name: true,
-                            description: true,
-                        },
-                    },
-                },
-                orderBy: [
-                    { role: 'desc' }, // ADMIN first
-                    { joinedAt: 'desc' }, // Then by join date
-                ],
-                skip: (page - 1) * pageSize,
-                take: pageSize,
-            }),
-            db.communityMember.count({ where }),
-        ]);
+        const totalItems = filteredMembers.length;
+
+        // Apply pagination AFTER filtering
+        const paginatedMembers = filteredMembers.slice(
+            (page - 1) * pageSize,
+            page * pageSize
+        );
 
         return {
-            items,
+            items: paginatedMembers,
             page,
             pageSize,
             totalItems,
             totalPages: Math.ceil(totalItems / pageSize) || 1,
         };
     },
+
 
     // Kept for backward compatibility - now uses new member system
     joinCommunity: async (communityId: string, userId: string) => {

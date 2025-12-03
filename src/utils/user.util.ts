@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const USER_SERVICE_URL = process.env.USER_SERVICE_URL || 'https://global-root-backend-602883087993.herokuapp.com/api';
+const USER_SERVICE_URL = process.env.USER_SERVICE_URL || 'https://global-root-gateway-service-148954d5b992.herokuapp.com/api/v1';
 const USER_SERVICE_TOKEN = process.env.USER_SERVICE_TOKEN || '';
 
 export interface UserDetails {
