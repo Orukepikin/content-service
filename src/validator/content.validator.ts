@@ -119,6 +119,14 @@ export const reject_member_validator = (data: any) => {
     return schema.validate(data);
 };
 
+export const notifyMemberForJoinApprovalValidator = (data: any) => {
+    const schema = Joi.object({
+        communityId: Joi.string().uuid().required(),
+        userId: Joi.string().uuid().required(),
+    });
+    return schema.validate(data);
+};
+
 export const like_comment_validator = (data: any) => {
     const schema = Joi.object({
         user_id: Joi.string().uuid().required(),

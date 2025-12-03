@@ -4,7 +4,7 @@ import cors from 'cors';
 import contentRoutes from './routes/content.routes';
 import swaggerUi from "swagger-ui-express";
 import { swaggerSpec } from './docs/swagger.config';
-import { ensureCommunitiesSeeded } from './seeding/community.seeder';
+// import { ensureCommunitiesSeeded } from './seeding/community.seeder';
 
 dotenv.config();
 const app = express();
@@ -15,7 +15,7 @@ app.use('/api/v1', contentRoutes);
 
 async function bootstrap() {
   try {
-    await ensureCommunitiesSeeded();
+    // await ensureCommunitiesSeeded();
     const port = process.env.PORT || 3000;
     app.listen(port, () => {
       console.log(`Content service running on port ${port}`);

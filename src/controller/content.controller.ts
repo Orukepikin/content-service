@@ -10,10 +10,12 @@ import {
   join_community_validator,
   like_comment_validator,
   like_post_validator,
+  notifyMemberForJoinApprovalValidator,
   reject_community_request_validator,
   reject_member_validator,
   update_event_validator,
   update_post_validator,
+  user_id_data_validator,
 } from '../validator/content.validator';
 import { contentService } from '../model/content.model';
 
@@ -607,9 +609,10 @@ export const getAdminDashboard = async (req: Request, res: Response) => {
 
 export const notifyCommunityAdminForRequestApproval = async (req: Request, res: Response) => {
   return ServiceWrapper.executeWithErrorHandling(res, async () => {
-    const { id } = req.params;
+    let { error, value } = user_id_data_validator(req.query);
+    if (error) throw new Error(`${error.message}`);
 
-    const result = await contentService.notifyCommunityAdminForRequestApproval(id);
+    const result = await contentService.notifyCommunityAdminForRequestApproval(value.id);
     return res.status(200).json({
       status: 200,
       message: 'Notification details retrieved successfully',
@@ -620,9 +623,10 @@ export const notifyCommunityAdminForRequestApproval = async (req: Request, res: 
 
 export const notifyMemberForJoinApproval = async (req: Request, res: Response) => {
   return ServiceWrapper.executeWithErrorHandling(res, async () => {
-    const { id, userId } = req.params;
+    let { error, value } = notifyMemberForJoinApprovalValidator(req.query);
+    if (error) throw new Error(`${error.message}`);
 
-    const result = await contentService.notifyMemberForJoinApproval(id, userId);
+    const result = await contentService.notifyMemberForJoinApproval(value.communityId, value.userId);
     return res.status(200).json({
       status: 200,
       message: 'Notification details retrieved successfully',

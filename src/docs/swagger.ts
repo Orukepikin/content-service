@@ -83,6 +83,7 @@ const postPaths: OpenAPIV3.PathsObject = {
     get: {
       tags: ['Notifications'],
       summary: 'Notify community admin for request approval',
+      parameters: [uuidParam('id', 'User identifier')],
       responses: {
         200: buildStandardResponse({
           type: 'object',
@@ -98,6 +99,7 @@ const postPaths: OpenAPIV3.PathsObject = {
     get: {
       tags: ['Notifications'],
       summary: 'Notify member for join approval',
+      parameters: [uuidParam('userId', 'User identifier'), uuidParam('communityId', 'Community identifier')],
       responses: {
         200: buildStandardResponse({
           type: 'object',
