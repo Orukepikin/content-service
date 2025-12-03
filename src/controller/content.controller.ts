@@ -630,3 +630,20 @@ export const notifyMemberForJoinApproval = async (req: Request, res: Response) =
     });
   });
 };
+
+
+export const getCommunityPostNotifications = async (req: Request, res: Response) => {
+  return ServiceWrapper.executeWithErrorHandling(res, async () => {
+    const token = req.headers.authorization?.split(' ')[1] as string;
+    const page = Math.max(parseInt(req.query.page as string, 10) || 1, 1);
+    const pageSize = Math.max(parseInt(req.query.limit as string, 10) || 10, 1);
+    const since = new Date(req.query.since as string);
+    const userId = req.query.userId as string;
+    const result = await contentService.getCommunityPostNotifications({ userId, page, pageSize, since, token });
+    return res.status(200).json({
+      status: 200,
+      message: 'Notification details retrieved successfully',
+      data: result
+    });
+  });
+};

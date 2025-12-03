@@ -78,6 +78,68 @@ const postPaths: OpenAPIV3.PathsObject = {
       }
     }
   },
+
+  '/notifications/community-request': {
+    get: {
+      tags: ['Notifications'],
+      summary: 'Notify community admin for request approval',
+      responses: {
+        200: buildStandardResponse({
+          type: 'object',
+          properties: {
+            status: { type: 'integer', example: 200 },
+            message: { type: 'string', example: 'Notification sent successfully' }
+          }
+        })
+      }
+    }
+  },
+  '/notifications/member-request': {
+    get: {
+      tags: ['Notifications'],
+      summary: 'Notify member for join approval',
+      responses: {
+        200: buildStandardResponse({
+          type: 'object',
+          properties: {
+            status: { type: 'integer', example: 200 },
+            message: { type: 'string', example: 'Notification sent successfully' }
+          }
+        })
+      }
+    }
+  },
+  '/notifications/posts': {
+    get: {
+      tags: ['Notifications'],
+      summary: 'Get community post notifications',
+      responses: {
+        200: buildStandardResponse({
+          type: 'object',
+          properties: {
+            status: { type: 'integer', example: 200 },
+            message: { type: 'string', example: 'Notification sent successfully' }
+          }
+        })
+      }
+    }
+  },
+  '/communities/:id/members': {
+    get: {
+      tags: ['Communities'],
+      summary: 'Get community members',
+      parameters: [uuidParam('id', 'Community identifier')],
+      responses: {
+        200: buildStandardResponse({
+          type: 'object',
+          properties: {
+            status: { type: 'integer', example: 200 },
+            data: { type: 'array', items: { $ref: '#/components/schemas/CommunityMember' } }
+          }
+        })
+      }
+    }
+  },
   '/posts/community/{id}': {
     get: {
       tags: ['Posts'],

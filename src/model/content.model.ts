@@ -531,6 +531,59 @@ export const contentService = {
         });
     },
 
+
+    getCommunityPostNotifications: async ({
+        userId,
+        page,
+        pageSize,
+        since,
+        token
+    }: {
+        userId: string;
+        page: number;
+        pageSize: number;
+        since?: Date;
+        token: string
+    }) => {
+        // 1. Get approved communities user belongs to
+        const approvedCommunities = await db.communityMember.findMany({
+            where: { userId, status: 'APPROVED' },
+            select: { communityId: true }
+        });
+
+        const communityIds = approvedCommunities.map(c => c.communityId);
+        if (communityIds.length === 0)
+            return { items: [], totalItems: 0, totalPages: 0 };
+
+        // 2. Build post query
+        const where: any = {
+            communityId: communityIds,
+            userId: { $ne: userId } // exclude user's own posts
+        };
+
+        if (since) where.createdAt = { $gte: since };
+
+        const totalItems = await db.post.count({ where });
+
+        const posts = await db.post.findMany({
+            where,
+            orderBy: { createdAt: 'desc' },
+            take: pageSize,
+            skip: (page - 1) * pageSize,
+            include: { community: true }
+        });
+
+        // 3. Fetch author details for each post via user service
+        const items = await fetchMultipleUserDetails(posts.map(p => p.user_id), token);
+        return {
+            items,
+            page,
+            pageSize,
+            totalItems,
+            totalPages: Math.ceil(totalItems / pageSize)
+        };
+    },
+
     getCommunityMembers: async ({
         communityId,
         page,

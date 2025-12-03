@@ -39,7 +39,8 @@ import {
     getAdminDashboard,
     notifyCommunityAdminForRequestApproval,
     notifyMemberForJoinApproval,
-    getCommunityMembers
+    getCommunityMembers,
+    getCommunityPostNotifications
 } from '../controller/content.controller';
 import { memoryUpload } from '../utils/multer';
 
@@ -103,5 +104,10 @@ router.get('/events/:id', getEventById);
 
 // ============= ADMIN ROUTES =============
 router.get('/admin/dashboard', getAdminDashboard);
+
+//=========NOTIFICATION ROUTES==============
+router.get('/notifications/community-request', notifyCommunityAdminForRequestApproval);
+router.get('/notifications/member-request', notifyMemberForJoinApproval);
+router.get('/notifications/posts', getCommunityPostNotifications);
 
 export default router;
