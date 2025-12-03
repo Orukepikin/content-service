@@ -319,6 +319,7 @@ export const getCommunityMembers = async (req: Request, res: Response) => {
     const token = req.headers.authorization?.split(' ')[1] as string;
     const page = Math.max(parseInt(req.query.page as string, 10) || 1, 1);
     const pageSize = Math.max(parseInt(req.query.limit as string, 10) || 10, 1);
+    const search = req.query.search as string | undefined;
 
     // Validate status if provided
     if (status && !['PENDING', 'APPROVED', 'REJECTED'].includes(status as string)) {
@@ -333,6 +334,7 @@ export const getCommunityMembers = async (req: Request, res: Response) => {
       page,
       pageSize,
       status: status as 'PENDING' | 'APPROVED' | 'REJECTED' | undefined,
+      search,
       token
     });
 
