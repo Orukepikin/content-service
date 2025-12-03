@@ -38,7 +38,8 @@ import {
     removeCommunityMember,
     getAdminDashboard,
     notifyCommunityAdminForRequestApproval,
-    notifyMemberForJoinApproval
+    notifyMemberForJoinApproval,
+    getCommunityMembers
 } from '../controller/content.controller';
 import { memoryUpload } from '../utils/multer';
 
@@ -71,6 +72,7 @@ router.get('/communities', getAllCommunities);
 // ============= MEMBER MANAGEMENT ROUTES =============
 router.post('/communities/join', requestJoinCommunity); // Updated to use new join request system
 router.post('/communities/:id/join/request', requestJoinCommunity); // Alternative endpoint
+router.get('/communities/:id/members', getCommunityMembers);
 router.get('/communities/:id/members/pending', getPendingMemberRequests);
 router.post('/communities/:id/members/:userId/approve', approveMemberRequest);
 router.post('/communities/:id/members/:userId/reject', rejectMemberRequest);

@@ -1,6 +1,7 @@
 import { db } from "../utils/db.connection.utils";
 import { uploadToCloudinary } from '../utils/cloudinary';
 import { CommunityStatus, Prisma, RequestStatus } from "../../generated/prisma";
+import { fetchMultipleUserDetails, fetchUserDetails } from '../utils/user.util';
 
 interface CreatePostDto {
     title: string;
@@ -530,6 +531,121 @@ export const contentService = {
         });
     },
 
+    getCommunityMembers: async ({
+        communityId,
+        page,
+        pageSize,
+        status,
+        search,
+        token
+    }: {
+        communityId: string;
+        page: number;
+        pageSize: number;
+        status?: 'PENDING' | 'APPROVED' | 'REJECTED';
+        search?: string;
+        token: string
+    }) => {
+        // Verify community exists
+        const community = await db.community.findUnique({
+            where: { id: communityId },
+        });
+
+        if (!community) {
+            throw new Error("Community not found");
+        }
+
+        const where = {
+            communityId,
+            ...(status ? { status } : {}),
+        };
+
+        // If search is provided, we need to fetch all members first, then filter by user details
+        if (search && search.trim()) {
+            const allMembers = await db.communityMember.findMany({
+                where,
+                include: {
+                    community: {
+                        select: {
+                            id: true,
+                            name: true,
+                            description: true,
+                        },
+                    },
+                },
+                orderBy: [
+                    { role: 'desc' }, // ADMIN first
+                    { joinedAt: 'desc' }, // Then by join date
+                ],
+            });
+
+            // Fetch user details for all members
+            const userIds = allMembers.map(member => member.userId);
+            const userMap = await fetchMultipleUserDetails(userIds, token);
+
+            // Filter members based on search term
+            const searchLower = search.toLowerCase().trim();
+            const filteredMembers = allMembers.filter(member => {
+                const user = userMap[member.userId];
+                if (!user) return false;
+
+                const fullName = user.fullName?.toLowerCase() || '';
+                const email = user.email?.toLowerCase() || '';
+                const userId = user.userId?.toLowerCase() || '';
+
+                return fullName.includes(searchLower) ||
+                    email.includes(searchLower) ||
+                    userId.includes(searchLower);
+            });
+
+            // Apply pagination to filtered results
+            const totalItems = filteredMembers.length;
+            const paginatedMembers = filteredMembers.slice(
+                (page - 1) * pageSize,
+                page * pageSize
+            );
+
+            return {
+                items: paginatedMembers,
+                page,
+                pageSize,
+                totalItems,
+                totalPages: Math.ceil(totalItems / pageSize) || 1,
+            };
+        }
+
+        // No search - use original logic
+        const [items, totalItems] = await Promise.all([
+            db.communityMember.findMany({
+                where,
+                include: {
+                    community: {
+                        select: {
+                            id: true,
+                            name: true,
+                            description: true,
+                        },
+                    },
+                },
+                orderBy: [
+                    { role: 'desc' }, // ADMIN first
+                    { joinedAt: 'desc' }, // Then by join date
+                ],
+                skip: (page - 1) * pageSize,
+                take: pageSize,
+            }),
+            db.communityMember.count({ where }),
+        ]);
+
+        return {
+            items,
+            page,
+            pageSize,
+            totalItems,
+            totalPages: Math.ceil(totalItems / pageSize) || 1,
+        };
+    },
+
     // Kept for backward compatibility - now uses new member system
     joinCommunity: async (communityId: string, userId: string) => {
         return await contentService.requestToJoinCommunity({ communityId, userId });
@@ -717,7 +833,7 @@ export const contentService = {
 
     // ============= COMMENT METHODS =============
 
-    addComment: async (commentData: CommentInputDto) => {
+    addComment: async (commentData: CommentInputDto, token: string) => {
         // Verify the post exists
         const post = await db.post.findUnique({
             where: { id: commentData.post_id }
@@ -740,7 +856,7 @@ export const contentService = {
             }
         }
 
-        return await db.comment.create({
+        const comment = await db.comment.create({
             data: {
                 content: commentData.content,
                 user_id: commentData.user_id,
@@ -754,9 +870,18 @@ export const contentService = {
                 }),
             },
         });
+
+        // Fetch user details to return with the comment
+        const userDetails = await fetchUserDetails(commentData.user_id, token);
+
+        return {
+            ...comment,
+            commenterName: userDetails?.fullName || 'Unknown User',
+            commenterProfileImage: null
+        };
     },
 
-    getAllCommentsByPostId: async (post_id: string) => {
+    getAllCommentsByPostId: async (post_id: string, token: string) => {
         // Verify the post exists
         const post = await db.post.findUnique({
             where: { id: post_id }
@@ -765,7 +890,7 @@ export const contentService = {
             throw new Error("Post not found");
         }
 
-        return await db.comment.findMany({
+        const comments = await db.comment.findMany({
             where: { post_id },
             include: {
                 replies: {
@@ -778,6 +903,36 @@ export const contentService = {
             orderBy: {
                 createdAt: "desc",
             },
+        });
+
+        // Extract all unique user IDs from comments and replies
+        const userIds = new Set<string>();
+        comments.forEach(comment => {
+            userIds.add(comment.user_id);
+            comment.replies.forEach(reply => userIds.add(reply.user_id));
+        });
+
+        // Fetch details for all users
+        const userMap = await fetchMultipleUserDetails(Array.from(userIds), token);
+
+        // Attach user details to comments and replies
+        return comments.map(comment => {
+            const user = userMap[comment.user_id];
+            const replies = comment.replies.map(reply => {
+                const replyUser = userMap[reply.user_id];
+                return {
+                    ...reply,
+                    commenterName: replyUser?.fullName || 'Unknown User',
+                    commenterProfileImage: null
+                };
+            });
+
+            return {
+                ...comment,
+                replies,
+                commenterName: user?.fullName || 'Unknown User',
+                commenterProfileImage: null
+            };
         });
     },
 

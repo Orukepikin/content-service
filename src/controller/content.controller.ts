@@ -310,6 +310,38 @@ export const removeCommunityMember = async (req: Request, res: Response) => {
   });
 };
 
+export const getCommunityMembers = async (req: Request, res: Response) => {
+  return ServiceWrapper.executeWithErrorHandling(res, async () => {
+    const { id } = req.params;
+    const { status } = req.query;
+    const token = req.headers.authorization?.split(' ')[1] as string;
+    const page = Math.max(parseInt(req.query.page as string, 10) || 1, 1);
+    const pageSize = Math.max(parseInt(req.query.limit as string, 10) || 10, 1);
+
+    // Validate status if provided
+    if (status && !['PENDING', 'APPROVED', 'REJECTED'].includes(status as string)) {
+      return res.status(400).json({
+        status: 400,
+        message: 'Invalid status. Must be PENDING, APPROVED, or REJECTED'
+      });
+    }
+
+    const members = await contentService.getCommunityMembers({
+      communityId: id,
+      page,
+      pageSize,
+      status: status as 'PENDING' | 'APPROVED' | 'REJECTED' | undefined,
+      token
+    });
+
+    return res.status(200).json({
+      status: 200,
+      message: 'Community members retrieved successfully',
+      data: members
+    });
+  });
+};
+
 // Kept for backward compatibility
 export const joinCommunity = async (req: Request, res: Response) => {
   return requestJoinCommunity(req, res);
@@ -498,8 +530,9 @@ export const addComment = (req: Request, res: Response) => {
   return ServiceWrapper.executeWithErrorHandling(res, async () => {
     let { error, value } = add_comment_validator(req.body);
     if (error) throw new Error(`${error.message}`);
+    const token = req.headers.authorization?.split(' ')[1] as string;
 
-    const comment = await contentService.addComment(value);
+    const comment = await contentService.addComment(value, token);
     return res.status(201).json({ status: 201, message: 'Comment added successfully', data: comment });
   });
 };
@@ -507,7 +540,8 @@ export const addComment = (req: Request, res: Response) => {
 export const getAllCommentsByPostId = (req: Request, res: Response) => {
   return ServiceWrapper.executeWithErrorHandling(res, async () => {
     const { post_id } = req.params;
-    const comments = await contentService.getAllCommentsByPostId(post_id);
+    const token = req.headers.authorization?.split(' ')[1] as string;
+    const comments = await contentService.getAllCommentsByPostId(post_id, token);
     return res.status(200).json({ status: 200, data: comments });
   });
 };

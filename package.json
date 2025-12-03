@@ -9,6 +9,8 @@
     "seed:communities": "ts-node-dev scripts/seed-communities.ts"
   },
   "dependencies": {
+    "@types/axios": "^0.9.36",
+    "axios": "^1.13.2",
     "cloudinary": "^1.39.1",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
