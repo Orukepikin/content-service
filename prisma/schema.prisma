@@ -9,20 +9,21 @@ datasource db {
 }
 
 model Community {
-  id              String          @id @default(uuid())
-  name            String          @unique
-  description     String?
-  location        String?
-  state           String?
-  lga             String?
-  communityType   CommunityType   @default(USER_CREATED)
-  status          CommunityStatus @default(PENDING)
-  createdBy       String
-  createdAt       DateTime        @default(now())
-  updatedAt       DateTime        @updatedAt
+  id            String          @id @default(uuid())
+  name          String          @unique
+  description   String?
+  location      String?
+  state         String?
+  lga           String?
+  communityType CommunityType   @default(USER_CREATED)
+  status        CommunityStatus @default(PENDING)
+  createdBy     String
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
 
-  members         CommunityMember[]
-  posts           Post[]
+  members CommunityMember[]
+  posts   Post[]
+  events  Event[]
 
   @@index([state, lga])
   @@index([status])
@@ -76,7 +77,7 @@ model CommunityMember {
   joinedAt    DateTime?
   requestedAt DateTime     @default(now())
 
-  community   Community    @relation(fields: [communityId], references: [id], onDelete: Cascade)
+  community Community @relation(fields: [communityId], references: [id], onDelete: Cascade)
 
   @@unique([userId, communityId])
   @@index([communityId])
@@ -106,9 +107,9 @@ model Post {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
-  community    Community @relation(fields: [community_id], references: [id])
-  comments     Comment[]
-  likes        Like[]
+  community Community @relation(fields: [community_id], references: [id])
+  comments  Comment[]
+  likes     Like[]
 }
 
 model Comment {
@@ -120,10 +121,10 @@ model Comment {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  post      Post      @relation(fields: [post_id], references: [id])
-  parent    Comment?  @relation("CommentReplies", fields: [parent_id], references: [id])
-  replies   Comment[] @relation("CommentReplies")
-  likes     Like[]
+  post    Post      @relation(fields: [post_id], references: [id])
+  parent  Comment?  @relation("CommentReplies", fields: [parent_id], references: [id])
+  replies Comment[] @relation("CommentReplies")
+  likes   Like[]
 }
 
 model Like {
@@ -133,9 +134,9 @@ model Like {
   comment_id String?
   createdAt  DateTime @default(now())
 
-  post       Post?    @relation(fields: [post_id], references: [id])
-  comment    Comment? @relation(fields: [comment_id], references: [id])
-  
+  post    Post?    @relation(fields: [post_id], references: [id])
+  comment Comment? @relation(fields: [comment_id], references: [id])
+
   @@unique([user_id, comment_id])
   @@unique([user_id, post_id])
 }
@@ -149,6 +150,12 @@ model Event {
   endDate     DateTime
   coverImage  String?
   createdBy   String
+  communityId String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  community Community? @relation(fields: [communityId], references: [id], onDelete: Cascade)
+
+  @@index([communityId])
+  @@index([startDate])
 }

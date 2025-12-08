@@ -1486,11 +1486,13 @@ export namespace Prisma {
   export type CommunityCountOutputType = {
     members: number
     posts: number
+    events: number
   }
 
   export type CommunityCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     members?: boolean | CommunityCountOutputTypeCountMembersArgs
     posts?: boolean | CommunityCountOutputTypeCountPostsArgs
+    events?: boolean | CommunityCountOutputTypeCountEventsArgs
   }
 
   // Custom InputTypes
@@ -1516,6 +1518,13 @@ export namespace Prisma {
    */
   export type CommunityCountOutputTypeCountPostsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PostWhereInput
+  }
+
+  /**
+   * CommunityCountOutputType without action
+   */
+  export type CommunityCountOutputTypeCountEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EventWhereInput
   }
 
 
@@ -1817,6 +1826,7 @@ export namespace Prisma {
     updatedAt?: boolean
     members?: boolean | Community$membersArgs<ExtArgs>
     posts?: boolean | Community$postsArgs<ExtArgs>
+    events?: boolean | Community$eventsArgs<ExtArgs>
     _count?: boolean | CommunityCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["community"]>
 
@@ -1866,6 +1876,7 @@ export namespace Prisma {
   export type CommunityInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     members?: boolean | Community$membersArgs<ExtArgs>
     posts?: boolean | Community$postsArgs<ExtArgs>
+    events?: boolean | Community$eventsArgs<ExtArgs>
     _count?: boolean | CommunityCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type CommunityIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -1876,6 +1887,7 @@ export namespace Prisma {
     objects: {
       members: Prisma.$CommunityMemberPayload<ExtArgs>[]
       posts: Prisma.$PostPayload<ExtArgs>[]
+      events: Prisma.$EventPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -2285,6 +2297,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     members<T extends Community$membersArgs<ExtArgs> = {}>(args?: Subset<T, Community$membersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommunityMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     posts<T extends Community$postsArgs<ExtArgs> = {}>(args?: Subset<T, Community$postsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    events<T extends Community$eventsArgs<ExtArgs> = {}>(args?: Subset<T, Community$eventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2758,6 +2771,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: PostScalarFieldEnum | PostScalarFieldEnum[]
+  }
+
+  /**
+   * Community.events
+   */
+  export type Community$eventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Event
+     */
+    select?: EventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Event
+     */
+    omit?: EventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventInclude<ExtArgs> | null
+    where?: EventWhereInput
+    orderBy?: EventOrderByWithRelationInput | EventOrderByWithRelationInput[]
+    cursor?: EventWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EventScalarFieldEnum | EventScalarFieldEnum[]
   }
 
   /**
@@ -8435,6 +8472,7 @@ export namespace Prisma {
     endDate: Date | null
     coverImage: string | null
     createdBy: string | null
+    communityId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -8448,6 +8486,7 @@ export namespace Prisma {
     endDate: Date | null
     coverImage: string | null
     createdBy: string | null
+    communityId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -8461,6 +8500,7 @@ export namespace Prisma {
     endDate: number
     coverImage: number
     createdBy: number
+    communityId: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -8476,6 +8516,7 @@ export namespace Prisma {
     endDate?: true
     coverImage?: true
     createdBy?: true
+    communityId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -8489,6 +8530,7 @@ export namespace Prisma {
     endDate?: true
     coverImage?: true
     createdBy?: true
+    communityId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -8502,6 +8544,7 @@ export namespace Prisma {
     endDate?: true
     coverImage?: true
     createdBy?: true
+    communityId?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -8588,6 +8631,7 @@ export namespace Prisma {
     endDate: Date
     coverImage: string | null
     createdBy: string
+    communityId: string | null
     createdAt: Date
     updatedAt: Date
     _count: EventCountAggregateOutputType | null
@@ -8618,8 +8662,10 @@ export namespace Prisma {
     endDate?: boolean
     coverImage?: boolean
     createdBy?: boolean
+    communityId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    community?: boolean | Event$communityArgs<ExtArgs>
   }, ExtArgs["result"]["event"]>
 
   export type EventSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -8631,8 +8677,10 @@ export namespace Prisma {
     endDate?: boolean
     coverImage?: boolean
     createdBy?: boolean
+    communityId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    community?: boolean | Event$communityArgs<ExtArgs>
   }, ExtArgs["result"]["event"]>
 
   export type EventSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -8644,8 +8692,10 @@ export namespace Prisma {
     endDate?: boolean
     coverImage?: boolean
     createdBy?: boolean
+    communityId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    community?: boolean | Event$communityArgs<ExtArgs>
   }, ExtArgs["result"]["event"]>
 
   export type EventSelectScalar = {
@@ -8657,15 +8707,27 @@ export namespace Prisma {
     endDate?: boolean
     coverImage?: boolean
     createdBy?: boolean
+    communityId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type EventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "location" | "startDate" | "endDate" | "coverImage" | "createdBy" | "createdAt" | "updatedAt", ExtArgs["result"]["event"]>
+  export type EventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "location" | "startDate" | "endDate" | "coverImage" | "createdBy" | "communityId" | "createdAt" | "updatedAt", ExtArgs["result"]["event"]>
+  export type EventInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    community?: boolean | Event$communityArgs<ExtArgs>
+  }
+  export type EventIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    community?: boolean | Event$communityArgs<ExtArgs>
+  }
+  export type EventIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    community?: boolean | Event$communityArgs<ExtArgs>
+  }
 
   export type $EventPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Event"
-    objects: {}
+    objects: {
+      community: Prisma.$CommunityPayload<ExtArgs> | null
+    }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       title: string
@@ -8675,6 +8737,7 @@ export namespace Prisma {
       endDate: Date
       coverImage: string | null
       createdBy: string
+      communityId: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["event"]>
@@ -9071,6 +9134,7 @@ export namespace Prisma {
    */
   export interface Prisma__EventClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    community<T extends Event$communityArgs<ExtArgs> = {}>(args?: Subset<T, Event$communityArgs<ExtArgs>>): Prisma__CommunityClient<$Result.GetResult<Prisma.$CommunityPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -9108,6 +9172,7 @@ export namespace Prisma {
     readonly endDate: FieldRef<"Event", 'DateTime'>
     readonly coverImage: FieldRef<"Event", 'String'>
     readonly createdBy: FieldRef<"Event", 'String'>
+    readonly communityId: FieldRef<"Event", 'String'>
     readonly createdAt: FieldRef<"Event", 'DateTime'>
     readonly updatedAt: FieldRef<"Event", 'DateTime'>
   }
@@ -9127,6 +9192,10 @@ export namespace Prisma {
      */
     omit?: EventOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventInclude<ExtArgs> | null
+    /**
      * Filter, which Event to fetch.
      */
     where: EventWhereUniqueInput
@@ -9145,6 +9214,10 @@ export namespace Prisma {
      */
     omit?: EventOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventInclude<ExtArgs> | null
+    /**
      * Filter, which Event to fetch.
      */
     where: EventWhereUniqueInput
@@ -9162,6 +9235,10 @@ export namespace Prisma {
      * Omit specific fields from the Event
      */
     omit?: EventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventInclude<ExtArgs> | null
     /**
      * Filter, which Event to fetch.
      */
@@ -9211,6 +9288,10 @@ export namespace Prisma {
      */
     omit?: EventOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventInclude<ExtArgs> | null
+    /**
      * Filter, which Event to fetch.
      */
     where?: EventWhereInput
@@ -9259,6 +9340,10 @@ export namespace Prisma {
      */
     omit?: EventOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventInclude<ExtArgs> | null
+    /**
      * Filter, which Events to fetch.
      */
     where?: EventWhereInput
@@ -9302,6 +9387,10 @@ export namespace Prisma {
      */
     omit?: EventOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventInclude<ExtArgs> | null
+    /**
      * The data needed to create a Event.
      */
     data: XOR<EventCreateInput, EventUncheckedCreateInput>
@@ -9335,6 +9424,10 @@ export namespace Prisma {
      */
     data: EventCreateManyInput | EventCreateManyInput[]
     skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -9349,6 +9442,10 @@ export namespace Prisma {
      * Omit specific fields from the Event
      */
     omit?: EventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventInclude<ExtArgs> | null
     /**
      * The data needed to update a Event.
      */
@@ -9401,6 +9498,10 @@ export namespace Prisma {
      * Limit how many Events to update.
      */
     limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -9415,6 +9516,10 @@ export namespace Prisma {
      * Omit specific fields from the Event
      */
     omit?: EventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventInclude<ExtArgs> | null
     /**
      * The filter to search for the Event to update in case it exists.
      */
@@ -9442,6 +9547,10 @@ export namespace Prisma {
      */
     omit?: EventOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventInclude<ExtArgs> | null
+    /**
      * Filter which Event to delete.
      */
     where: EventWhereUniqueInput
@@ -9462,6 +9571,25 @@ export namespace Prisma {
   }
 
   /**
+   * Event.community
+   */
+  export type Event$communityArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Community
+     */
+    select?: CommunitySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Community
+     */
+    omit?: CommunityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CommunityInclude<ExtArgs> | null
+    where?: CommunityWhereInput
+  }
+
+  /**
    * Event without action
    */
   export type EventDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -9473,6 +9601,10 @@ export namespace Prisma {
      * Omit specific fields from the Event
      */
     omit?: EventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventInclude<ExtArgs> | null
   }
 
 
@@ -9588,6 +9720,7 @@ export namespace Prisma {
     endDate: 'endDate',
     coverImage: 'coverImage',
     createdBy: 'createdBy',
+    communityId: 'communityId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -9756,6 +9889,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Community"> | Date | string
     members?: CommunityMemberListRelationFilter
     posts?: PostListRelationFilter
+    events?: EventListRelationFilter
   }
 
   export type CommunityOrderByWithRelationInput = {
@@ -9772,6 +9906,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     members?: CommunityMemberOrderByRelationAggregateInput
     posts?: PostOrderByRelationAggregateInput
+    events?: EventOrderByRelationAggregateInput
   }
 
   export type CommunityWhereUniqueInput = Prisma.AtLeast<{
@@ -9791,6 +9926,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Community"> | Date | string
     members?: CommunityMemberListRelationFilter
     posts?: PostListRelationFilter
+    events?: EventListRelationFilter
   }, "id" | "name">
 
   export type CommunityOrderByWithAggregationInput = {
@@ -10217,8 +10353,10 @@ export namespace Prisma {
     endDate?: DateTimeFilter<"Event"> | Date | string
     coverImage?: StringNullableFilter<"Event"> | string | null
     createdBy?: StringFilter<"Event"> | string
+    communityId?: StringNullableFilter<"Event"> | string | null
     createdAt?: DateTimeFilter<"Event"> | Date | string
     updatedAt?: DateTimeFilter<"Event"> | Date | string
+    community?: XOR<CommunityNullableScalarRelationFilter, CommunityWhereInput> | null
   }
 
   export type EventOrderByWithRelationInput = {
@@ -10230,8 +10368,10 @@ export namespace Prisma {
     endDate?: SortOrder
     coverImage?: SortOrderInput | SortOrder
     createdBy?: SortOrder
+    communityId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    community?: CommunityOrderByWithRelationInput
   }
 
   export type EventWhereUniqueInput = Prisma.AtLeast<{
@@ -10246,8 +10386,10 @@ export namespace Prisma {
     endDate?: DateTimeFilter<"Event"> | Date | string
     coverImage?: StringNullableFilter<"Event"> | string | null
     createdBy?: StringFilter<"Event"> | string
+    communityId?: StringNullableFilter<"Event"> | string | null
     createdAt?: DateTimeFilter<"Event"> | Date | string
     updatedAt?: DateTimeFilter<"Event"> | Date | string
+    community?: XOR<CommunityNullableScalarRelationFilter, CommunityWhereInput> | null
   }, "id">
 
   export type EventOrderByWithAggregationInput = {
@@ -10259,6 +10401,7 @@ export namespace Prisma {
     endDate?: SortOrder
     coverImage?: SortOrderInput | SortOrder
     createdBy?: SortOrder
+    communityId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: EventCountOrderByAggregateInput
@@ -10278,6 +10421,7 @@ export namespace Prisma {
     endDate?: DateTimeWithAggregatesFilter<"Event"> | Date | string
     coverImage?: StringNullableWithAggregatesFilter<"Event"> | string | null
     createdBy?: StringWithAggregatesFilter<"Event"> | string
+    communityId?: StringNullableWithAggregatesFilter<"Event"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Event"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Event"> | Date | string
   }
@@ -10296,6 +10440,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     members?: CommunityMemberCreateNestedManyWithoutCommunityInput
     posts?: PostCreateNestedManyWithoutCommunityInput
+    events?: EventCreateNestedManyWithoutCommunityInput
   }
 
   export type CommunityUncheckedCreateInput = {
@@ -10312,6 +10457,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     members?: CommunityMemberUncheckedCreateNestedManyWithoutCommunityInput
     posts?: PostUncheckedCreateNestedManyWithoutCommunityInput
+    events?: EventUncheckedCreateNestedManyWithoutCommunityInput
   }
 
   export type CommunityUpdateInput = {
@@ -10328,6 +10474,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: CommunityMemberUpdateManyWithoutCommunityNestedInput
     posts?: PostUpdateManyWithoutCommunityNestedInput
+    events?: EventUpdateManyWithoutCommunityNestedInput
   }
 
   export type CommunityUncheckedUpdateInput = {
@@ -10344,6 +10491,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: CommunityMemberUncheckedUpdateManyWithoutCommunityNestedInput
     posts?: PostUncheckedUpdateManyWithoutCommunityNestedInput
+    events?: EventUncheckedUpdateManyWithoutCommunityNestedInput
   }
 
   export type CommunityCreateManyInput = {
@@ -10808,6 +10956,7 @@ export namespace Prisma {
     createdBy: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    community?: CommunityCreateNestedOneWithoutEventsInput
   }
 
   export type EventUncheckedCreateInput = {
@@ -10819,6 +10968,7 @@ export namespace Prisma {
     endDate: Date | string
     coverImage?: string | null
     createdBy: string
+    communityId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -10834,6 +10984,7 @@ export namespace Prisma {
     createdBy?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    community?: CommunityUpdateOneWithoutEventsNestedInput
   }
 
   export type EventUncheckedUpdateInput = {
@@ -10845,6 +10996,7 @@ export namespace Prisma {
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     coverImage?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: StringFieldUpdateOperationsInput | string
+    communityId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -10858,6 +11010,7 @@ export namespace Prisma {
     endDate: Date | string
     coverImage?: string | null
     createdBy: string
+    communityId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -10884,6 +11037,7 @@ export namespace Prisma {
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     coverImage?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: StringFieldUpdateOperationsInput | string
+    communityId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -10955,6 +11109,12 @@ export namespace Prisma {
     none?: PostWhereInput
   }
 
+  export type EventListRelationFilter = {
+    every?: EventWhereInput
+    some?: EventWhereInput
+    none?: EventWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -10965,6 +11125,10 @@ export namespace Prisma {
   }
 
   export type PostOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type EventOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -11382,6 +11546,11 @@ export namespace Prisma {
     createdAt?: SortOrder
   }
 
+  export type CommunityNullableScalarRelationFilter = {
+    is?: CommunityWhereInput | null
+    isNot?: CommunityWhereInput | null
+  }
+
   export type EventCountOrderByAggregateInput = {
     id?: SortOrder
     title?: SortOrder
@@ -11391,6 +11560,7 @@ export namespace Prisma {
     endDate?: SortOrder
     coverImage?: SortOrder
     createdBy?: SortOrder
+    communityId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -11404,6 +11574,7 @@ export namespace Prisma {
     endDate?: SortOrder
     coverImage?: SortOrder
     createdBy?: SortOrder
+    communityId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -11417,6 +11588,7 @@ export namespace Prisma {
     endDate?: SortOrder
     coverImage?: SortOrder
     createdBy?: SortOrder
+    communityId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -11435,6 +11607,13 @@ export namespace Prisma {
     connect?: PostWhereUniqueInput | PostWhereUniqueInput[]
   }
 
+  export type EventCreateNestedManyWithoutCommunityInput = {
+    create?: XOR<EventCreateWithoutCommunityInput, EventUncheckedCreateWithoutCommunityInput> | EventCreateWithoutCommunityInput[] | EventUncheckedCreateWithoutCommunityInput[]
+    connectOrCreate?: EventCreateOrConnectWithoutCommunityInput | EventCreateOrConnectWithoutCommunityInput[]
+    createMany?: EventCreateManyCommunityInputEnvelope
+    connect?: EventWhereUniqueInput | EventWhereUniqueInput[]
+  }
+
   export type CommunityMemberUncheckedCreateNestedManyWithoutCommunityInput = {
     create?: XOR<CommunityMemberCreateWithoutCommunityInput, CommunityMemberUncheckedCreateWithoutCommunityInput> | CommunityMemberCreateWithoutCommunityInput[] | CommunityMemberUncheckedCreateWithoutCommunityInput[]
     connectOrCreate?: CommunityMemberCreateOrConnectWithoutCommunityInput | CommunityMemberCreateOrConnectWithoutCommunityInput[]
@@ -11447,6 +11626,13 @@ export namespace Prisma {
     connectOrCreate?: PostCreateOrConnectWithoutCommunityInput | PostCreateOrConnectWithoutCommunityInput[]
     createMany?: PostCreateManyCommunityInputEnvelope
     connect?: PostWhereUniqueInput | PostWhereUniqueInput[]
+  }
+
+  export type EventUncheckedCreateNestedManyWithoutCommunityInput = {
+    create?: XOR<EventCreateWithoutCommunityInput, EventUncheckedCreateWithoutCommunityInput> | EventCreateWithoutCommunityInput[] | EventUncheckedCreateWithoutCommunityInput[]
+    connectOrCreate?: EventCreateOrConnectWithoutCommunityInput | EventCreateOrConnectWithoutCommunityInput[]
+    createMany?: EventCreateManyCommunityInputEnvelope
+    connect?: EventWhereUniqueInput | EventWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -11497,6 +11683,20 @@ export namespace Prisma {
     deleteMany?: PostScalarWhereInput | PostScalarWhereInput[]
   }
 
+  export type EventUpdateManyWithoutCommunityNestedInput = {
+    create?: XOR<EventCreateWithoutCommunityInput, EventUncheckedCreateWithoutCommunityInput> | EventCreateWithoutCommunityInput[] | EventUncheckedCreateWithoutCommunityInput[]
+    connectOrCreate?: EventCreateOrConnectWithoutCommunityInput | EventCreateOrConnectWithoutCommunityInput[]
+    upsert?: EventUpsertWithWhereUniqueWithoutCommunityInput | EventUpsertWithWhereUniqueWithoutCommunityInput[]
+    createMany?: EventCreateManyCommunityInputEnvelope
+    set?: EventWhereUniqueInput | EventWhereUniqueInput[]
+    disconnect?: EventWhereUniqueInput | EventWhereUniqueInput[]
+    delete?: EventWhereUniqueInput | EventWhereUniqueInput[]
+    connect?: EventWhereUniqueInput | EventWhereUniqueInput[]
+    update?: EventUpdateWithWhereUniqueWithoutCommunityInput | EventUpdateWithWhereUniqueWithoutCommunityInput[]
+    updateMany?: EventUpdateManyWithWhereWithoutCommunityInput | EventUpdateManyWithWhereWithoutCommunityInput[]
+    deleteMany?: EventScalarWhereInput | EventScalarWhereInput[]
+  }
+
   export type CommunityMemberUncheckedUpdateManyWithoutCommunityNestedInput = {
     create?: XOR<CommunityMemberCreateWithoutCommunityInput, CommunityMemberUncheckedCreateWithoutCommunityInput> | CommunityMemberCreateWithoutCommunityInput[] | CommunityMemberUncheckedCreateWithoutCommunityInput[]
     connectOrCreate?: CommunityMemberCreateOrConnectWithoutCommunityInput | CommunityMemberCreateOrConnectWithoutCommunityInput[]
@@ -11523,6 +11723,20 @@ export namespace Prisma {
     update?: PostUpdateWithWhereUniqueWithoutCommunityInput | PostUpdateWithWhereUniqueWithoutCommunityInput[]
     updateMany?: PostUpdateManyWithWhereWithoutCommunityInput | PostUpdateManyWithWhereWithoutCommunityInput[]
     deleteMany?: PostScalarWhereInput | PostScalarWhereInput[]
+  }
+
+  export type EventUncheckedUpdateManyWithoutCommunityNestedInput = {
+    create?: XOR<EventCreateWithoutCommunityInput, EventUncheckedCreateWithoutCommunityInput> | EventCreateWithoutCommunityInput[] | EventUncheckedCreateWithoutCommunityInput[]
+    connectOrCreate?: EventCreateOrConnectWithoutCommunityInput | EventCreateOrConnectWithoutCommunityInput[]
+    upsert?: EventUpsertWithWhereUniqueWithoutCommunityInput | EventUpsertWithWhereUniqueWithoutCommunityInput[]
+    createMany?: EventCreateManyCommunityInputEnvelope
+    set?: EventWhereUniqueInput | EventWhereUniqueInput[]
+    disconnect?: EventWhereUniqueInput | EventWhereUniqueInput[]
+    delete?: EventWhereUniqueInput | EventWhereUniqueInput[]
+    connect?: EventWhereUniqueInput | EventWhereUniqueInput[]
+    update?: EventUpdateWithWhereUniqueWithoutCommunityInput | EventUpdateWithWhereUniqueWithoutCommunityInput[]
+    updateMany?: EventUpdateManyWithWhereWithoutCommunityInput | EventUpdateManyWithWhereWithoutCommunityInput[]
+    deleteMany?: EventScalarWhereInput | EventScalarWhereInput[]
   }
 
   export type EnumRequestStatusFieldUpdateOperationsInput = {
@@ -11797,6 +12011,22 @@ export namespace Prisma {
     delete?: CommentWhereInput | boolean
     connect?: CommentWhereUniqueInput
     update?: XOR<XOR<CommentUpdateToOneWithWhereWithoutLikesInput, CommentUpdateWithoutLikesInput>, CommentUncheckedUpdateWithoutLikesInput>
+  }
+
+  export type CommunityCreateNestedOneWithoutEventsInput = {
+    create?: XOR<CommunityCreateWithoutEventsInput, CommunityUncheckedCreateWithoutEventsInput>
+    connectOrCreate?: CommunityCreateOrConnectWithoutEventsInput
+    connect?: CommunityWhereUniqueInput
+  }
+
+  export type CommunityUpdateOneWithoutEventsNestedInput = {
+    create?: XOR<CommunityCreateWithoutEventsInput, CommunityUncheckedCreateWithoutEventsInput>
+    connectOrCreate?: CommunityCreateOrConnectWithoutEventsInput
+    upsert?: CommunityUpsertWithoutEventsInput
+    disconnect?: CommunityWhereInput | boolean
+    delete?: CommunityWhereInput | boolean
+    connect?: CommunityWhereUniqueInput
+    update?: XOR<XOR<CommunityUpdateToOneWithWhereWithoutEventsInput, CommunityUpdateWithoutEventsInput>, CommunityUncheckedUpdateWithoutEventsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -12082,6 +12312,42 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type EventCreateWithoutCommunityInput = {
+    id?: string
+    title: string
+    description?: string | null
+    location?: string | null
+    startDate: Date | string
+    endDate: Date | string
+    coverImage?: string | null
+    createdBy: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EventUncheckedCreateWithoutCommunityInput = {
+    id?: string
+    title: string
+    description?: string | null
+    location?: string | null
+    startDate: Date | string
+    endDate: Date | string
+    coverImage?: string | null
+    createdBy: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EventCreateOrConnectWithoutCommunityInput = {
+    where: EventWhereUniqueInput
+    create: XOR<EventCreateWithoutCommunityInput, EventUncheckedCreateWithoutCommunityInput>
+  }
+
+  export type EventCreateManyCommunityInputEnvelope = {
+    data: EventCreateManyCommunityInput | EventCreateManyCommunityInput[]
+    skipDuplicates?: boolean
+  }
+
   export type CommunityMemberUpsertWithWhereUniqueWithoutCommunityInput = {
     where: CommunityMemberWhereUniqueInput
     update: XOR<CommunityMemberUpdateWithoutCommunityInput, CommunityMemberUncheckedUpdateWithoutCommunityInput>
@@ -12142,6 +12408,39 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Post"> | Date | string
   }
 
+  export type EventUpsertWithWhereUniqueWithoutCommunityInput = {
+    where: EventWhereUniqueInput
+    update: XOR<EventUpdateWithoutCommunityInput, EventUncheckedUpdateWithoutCommunityInput>
+    create: XOR<EventCreateWithoutCommunityInput, EventUncheckedCreateWithoutCommunityInput>
+  }
+
+  export type EventUpdateWithWhereUniqueWithoutCommunityInput = {
+    where: EventWhereUniqueInput
+    data: XOR<EventUpdateWithoutCommunityInput, EventUncheckedUpdateWithoutCommunityInput>
+  }
+
+  export type EventUpdateManyWithWhereWithoutCommunityInput = {
+    where: EventScalarWhereInput
+    data: XOR<EventUpdateManyMutationInput, EventUncheckedUpdateManyWithoutCommunityInput>
+  }
+
+  export type EventScalarWhereInput = {
+    AND?: EventScalarWhereInput | EventScalarWhereInput[]
+    OR?: EventScalarWhereInput[]
+    NOT?: EventScalarWhereInput | EventScalarWhereInput[]
+    id?: StringFilter<"Event"> | string
+    title?: StringFilter<"Event"> | string
+    description?: StringNullableFilter<"Event"> | string | null
+    location?: StringNullableFilter<"Event"> | string | null
+    startDate?: DateTimeFilter<"Event"> | Date | string
+    endDate?: DateTimeFilter<"Event"> | Date | string
+    coverImage?: StringNullableFilter<"Event"> | string | null
+    createdBy?: StringFilter<"Event"> | string
+    communityId?: StringNullableFilter<"Event"> | string | null
+    createdAt?: DateTimeFilter<"Event"> | Date | string
+    updatedAt?: DateTimeFilter<"Event"> | Date | string
+  }
+
   export type CommunityCreateWithoutMembersInput = {
     id?: string
     name: string
@@ -12155,6 +12454,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     posts?: PostCreateNestedManyWithoutCommunityInput
+    events?: EventCreateNestedManyWithoutCommunityInput
   }
 
   export type CommunityUncheckedCreateWithoutMembersInput = {
@@ -12170,6 +12470,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     posts?: PostUncheckedCreateNestedManyWithoutCommunityInput
+    events?: EventUncheckedCreateNestedManyWithoutCommunityInput
   }
 
   export type CommunityCreateOrConnectWithoutMembersInput = {
@@ -12201,6 +12502,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     posts?: PostUpdateManyWithoutCommunityNestedInput
+    events?: EventUpdateManyWithoutCommunityNestedInput
   }
 
   export type CommunityUncheckedUpdateWithoutMembersInput = {
@@ -12216,6 +12518,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     posts?: PostUncheckedUpdateManyWithoutCommunityNestedInput
+    events?: EventUncheckedUpdateManyWithoutCommunityNestedInput
   }
 
   export type CommunityCreateWithoutPostsInput = {
@@ -12231,6 +12534,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: CommunityMemberCreateNestedManyWithoutCommunityInput
+    events?: EventCreateNestedManyWithoutCommunityInput
   }
 
   export type CommunityUncheckedCreateWithoutPostsInput = {
@@ -12246,6 +12550,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: CommunityMemberUncheckedCreateNestedManyWithoutCommunityInput
+    events?: EventUncheckedCreateNestedManyWithoutCommunityInput
   }
 
   export type CommunityCreateOrConnectWithoutPostsInput = {
@@ -12333,6 +12638,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: CommunityMemberUpdateManyWithoutCommunityNestedInput
+    events?: EventUpdateManyWithoutCommunityNestedInput
   }
 
   export type CommunityUncheckedUpdateWithoutPostsInput = {
@@ -12348,6 +12654,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: CommunityMemberUncheckedUpdateManyWithoutCommunityNestedInput
+    events?: EventUncheckedUpdateManyWithoutCommunityNestedInput
   }
 
   export type CommentUpsertWithWhereUniqueWithoutPostInput = {
@@ -12750,6 +13057,86 @@ export namespace Prisma {
     replies?: CommentUncheckedUpdateManyWithoutParentNestedInput
   }
 
+  export type CommunityCreateWithoutEventsInput = {
+    id?: string
+    name: string
+    description?: string | null
+    location?: string | null
+    state?: string | null
+    lga?: string | null
+    communityType?: $Enums.CommunityType
+    status?: $Enums.CommunityStatus
+    createdBy: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    members?: CommunityMemberCreateNestedManyWithoutCommunityInput
+    posts?: PostCreateNestedManyWithoutCommunityInput
+  }
+
+  export type CommunityUncheckedCreateWithoutEventsInput = {
+    id?: string
+    name: string
+    description?: string | null
+    location?: string | null
+    state?: string | null
+    lga?: string | null
+    communityType?: $Enums.CommunityType
+    status?: $Enums.CommunityStatus
+    createdBy: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    members?: CommunityMemberUncheckedCreateNestedManyWithoutCommunityInput
+    posts?: PostUncheckedCreateNestedManyWithoutCommunityInput
+  }
+
+  export type CommunityCreateOrConnectWithoutEventsInput = {
+    where: CommunityWhereUniqueInput
+    create: XOR<CommunityCreateWithoutEventsInput, CommunityUncheckedCreateWithoutEventsInput>
+  }
+
+  export type CommunityUpsertWithoutEventsInput = {
+    update: XOR<CommunityUpdateWithoutEventsInput, CommunityUncheckedUpdateWithoutEventsInput>
+    create: XOR<CommunityCreateWithoutEventsInput, CommunityUncheckedCreateWithoutEventsInput>
+    where?: CommunityWhereInput
+  }
+
+  export type CommunityUpdateToOneWithWhereWithoutEventsInput = {
+    where?: CommunityWhereInput
+    data: XOR<CommunityUpdateWithoutEventsInput, CommunityUncheckedUpdateWithoutEventsInput>
+  }
+
+  export type CommunityUpdateWithoutEventsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    lga?: NullableStringFieldUpdateOperationsInput | string | null
+    communityType?: EnumCommunityTypeFieldUpdateOperationsInput | $Enums.CommunityType
+    status?: EnumCommunityStatusFieldUpdateOperationsInput | $Enums.CommunityStatus
+    createdBy?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: CommunityMemberUpdateManyWithoutCommunityNestedInput
+    posts?: PostUpdateManyWithoutCommunityNestedInput
+  }
+
+  export type CommunityUncheckedUpdateWithoutEventsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    lga?: NullableStringFieldUpdateOperationsInput | string | null
+    communityType?: EnumCommunityTypeFieldUpdateOperationsInput | $Enums.CommunityType
+    status?: EnumCommunityStatusFieldUpdateOperationsInput | $Enums.CommunityStatus
+    createdBy?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: CommunityMemberUncheckedUpdateManyWithoutCommunityNestedInput
+    posts?: PostUncheckedUpdateManyWithoutCommunityNestedInput
+  }
+
   export type CommunityMemberCreateManyCommunityInput = {
     id?: string
     userId: string
@@ -12766,6 +13153,19 @@ export namespace Prisma {
     description: string
     mediaUrl?: string | null
     user_id: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EventCreateManyCommunityInput = {
+    id?: string
+    title: string
+    description?: string | null
+    location?: string | null
+    startDate: Date | string
+    endDate: Date | string
+    coverImage?: string | null
+    createdBy: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -12830,6 +13230,45 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     mediaUrl?: NullableStringFieldUpdateOperationsInput | string | null
     user_id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EventUpdateWithoutCommunityInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EventUncheckedUpdateWithoutCommunityInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EventUncheckedUpdateManyWithoutCommunityInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

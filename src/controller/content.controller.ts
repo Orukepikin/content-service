@@ -415,8 +415,19 @@ export const getEventById = async (req: Request, res: Response) => {
 
 export const getAllEvents = async (req: Request, res: Response) => {
   return ServiceWrapper.executeWithErrorHandling(res, async () => {
-    const { title } = req.query;
-    const events = await contentService.getAllEvents(title as string);
+    const { communityId, title } = req.query;
+
+    if (!communityId) {
+      return res.status(400).json({
+        status: 400,
+        message: 'communityId query parameter is required'
+      });
+    }
+
+    const events = await contentService.getAllEvents(
+      communityId as string,
+      title as string
+    );
 
     return res.status(200).json({
       status: 200,

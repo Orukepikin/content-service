@@ -66,6 +66,7 @@ export interface CreateEventDto {
     endDate: Date;
     coverImage?: string;
     createdBy: string;
+    communityId: string;
 }
 
 export interface UpdateEventDto {
@@ -685,6 +686,32 @@ export const contentService = {
     // ============= EVENT METHODS =============
 
     createEvent: async (event: CreateEventDto) => {
+        // Verify community exists
+        const community = await db.community.findUnique({
+            where: { id: event.communityId },
+        });
+
+        if (!community) {
+            throw new Error("Community not found");
+        }
+
+        if (community.status !== 'ACTIVE') {
+            throw new Error("Cannot create events in an inactive community");
+        }
+
+        // Verify user is an approved member of the community
+        const membership = await db.communityMember.findFirst({
+            where: {
+                userId: event.createdBy,
+                communityId: event.communityId,
+                status: 'APPROVED',
+            },
+        });
+
+        if (!membership) {
+            throw new Error("You must be an approved member of the community to create events");
+        }
+
         return await db.event.create({
             data: event
         });
@@ -709,16 +736,17 @@ export const contentService = {
         });
     },
 
-    getAllEvents: async (title?: string) => {
+    getAllEvents: async (communityId: string, title?: string) => {
         return await db.event.findMany({
-            where: title
-                ? {
+            where: {
+                communityId,
+                ...(title ? {
                     title: {
                         contains: title,
                         mode: 'insensitive'
                     }
-                }
-                : undefined,
+                } : {})
+            },
             orderBy: { startDate: 'asc' }
         });
     },

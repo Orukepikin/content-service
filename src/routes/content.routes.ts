@@ -99,7 +99,7 @@ router.get('/comments/:comment_id/likes/count', getCommentLikeCount);
 router.post('/events/create', createEvent);
 router.put('/events/:id', updateEvent);
 router.delete('/events/:id', deleteEvent);
-router.get('/events/getAll', getAllEvents);
+router.get('/events/getAll', getAllEvents); // Requires ?communityId=xxx query parameter
 router.get('/events/:id', getEventById);
 
 // ============= ADMIN ROUTES =============

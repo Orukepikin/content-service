@@ -200,6 +200,7 @@ exports.Prisma.EventScalarFieldEnum = {
   endDate: 'endDate',
   coverImage: 'coverImage',
   createdBy: 'createdBy',
+  communityId: 'communityId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };

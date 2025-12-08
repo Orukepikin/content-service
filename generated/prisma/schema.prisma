@@ -23,6 +23,7 @@ model Community {
 
   members CommunityMember[]
   posts   Post[]
+  events  Event[]
 
   @@index([state, lga])
   @@index([status])
@@ -149,6 +150,12 @@ model Event {
   endDate     DateTime
   coverImage  String?
   createdBy   String
+  communityId String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  community Community? @relation(fields: [communityId], references: [id], onDelete: Cascade)
+
+  @@index([communityId])
+  @@index([startDate])
 }

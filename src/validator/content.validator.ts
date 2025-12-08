@@ -155,7 +155,8 @@ export const create_event_validator = (data: any) =>
         startDate: Joi.date().iso().required(),
         endDate: Joi.date().iso().required(),
         coverImage: Joi.string().uri().optional(),
-        createdBy: Joi.string().required()
+        createdBy: Joi.string().uuid().required(),
+        communityId: Joi.string().uuid().required()
     }).validate(data);
 
 export const update_event_validator = (data: any) =>
