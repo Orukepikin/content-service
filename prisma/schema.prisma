@@ -15,6 +15,7 @@ model Community {
   location      String?
   state         String?
   lga           String?
+  ward          String?
   communityType CommunityType   @default(USER_CREATED)
   status        CommunityStatus @default(PENDING)
   createdBy     String
@@ -25,13 +26,14 @@ model Community {
   posts   Post[]
   events  Event[]
 
-  @@index([state, lga])
+  @@index([state, lga, ward])
   @@index([status])
   @@index([communityType])
 }
 
 enum CommunityType {
   SYSTEM_LGA
+  SYSTEM_WARD
   USER_CREATED
 }
 
@@ -49,6 +51,7 @@ model CommunityRequest {
   location        String?
   state           String?
   lga             String?
+  ward            String?
   email           String
   requestedBy     String
   status          RequestStatus @default(PENDING)

@@ -127,6 +127,7 @@ exports.Prisma.CommunityScalarFieldEnum = {
   location: 'location',
   state: 'state',
   lga: 'lga',
+  ward: 'ward',
   communityType: 'communityType',
   status: 'status',
   createdBy: 'createdBy',
@@ -141,6 +142,7 @@ exports.Prisma.CommunityRequestScalarFieldEnum = {
   location: 'location',
   state: 'state',
   lga: 'lga',
+  ward: 'ward',
   email: 'email',
   requestedBy: 'requestedBy',
   status: 'status',
@@ -221,6 +223,7 @@ exports.Prisma.NullsOrder = {
 };
 exports.CommunityType = exports.$Enums.CommunityType = {
   SYSTEM_LGA: 'SYSTEM_LGA',
+  SYSTEM_WARD: 'SYSTEM_WARD',
   USER_CREATED: 'USER_CREATED'
 };
 

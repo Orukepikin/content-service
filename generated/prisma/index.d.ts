@@ -55,6 +55,7 @@ export type Event = $Result.DefaultSelection<Prisma.$EventPayload>
 export namespace $Enums {
   export const CommunityType: {
   SYSTEM_LGA: 'SYSTEM_LGA',
+  SYSTEM_WARD: 'SYSTEM_WARD',
   USER_CREATED: 'USER_CREATED'
 };
 
@@ -1629,6 +1630,7 @@ export namespace Prisma {
     location: string | null
     state: string | null
     lga: string | null
+    ward: string | null
     communityType: $Enums.CommunityType | null
     status: $Enums.CommunityStatus | null
     createdBy: string | null
@@ -1643,6 +1645,7 @@ export namespace Prisma {
     location: string | null
     state: string | null
     lga: string | null
+    ward: string | null
     communityType: $Enums.CommunityType | null
     status: $Enums.CommunityStatus | null
     createdBy: string | null
@@ -1657,6 +1660,7 @@ export namespace Prisma {
     location: number
     state: number
     lga: number
+    ward: number
     communityType: number
     status: number
     createdBy: number
@@ -1673,6 +1677,7 @@ export namespace Prisma {
     location?: true
     state?: true
     lga?: true
+    ward?: true
     communityType?: true
     status?: true
     createdBy?: true
@@ -1687,6 +1692,7 @@ export namespace Prisma {
     location?: true
     state?: true
     lga?: true
+    ward?: true
     communityType?: true
     status?: true
     createdBy?: true
@@ -1701,6 +1707,7 @@ export namespace Prisma {
     location?: true
     state?: true
     lga?: true
+    ward?: true
     communityType?: true
     status?: true
     createdBy?: true
@@ -1788,6 +1795,7 @@ export namespace Prisma {
     location: string | null
     state: string | null
     lga: string | null
+    ward: string | null
     communityType: $Enums.CommunityType
     status: $Enums.CommunityStatus
     createdBy: string
@@ -1819,6 +1827,7 @@ export namespace Prisma {
     location?: boolean
     state?: boolean
     lga?: boolean
+    ward?: boolean
     communityType?: boolean
     status?: boolean
     createdBy?: boolean
@@ -1837,6 +1846,7 @@ export namespace Prisma {
     location?: boolean
     state?: boolean
     lga?: boolean
+    ward?: boolean
     communityType?: boolean
     status?: boolean
     createdBy?: boolean
@@ -1851,6 +1861,7 @@ export namespace Prisma {
     location?: boolean
     state?: boolean
     lga?: boolean
+    ward?: boolean
     communityType?: boolean
     status?: boolean
     createdBy?: boolean
@@ -1865,6 +1876,7 @@ export namespace Prisma {
     location?: boolean
     state?: boolean
     lga?: boolean
+    ward?: boolean
     communityType?: boolean
     status?: boolean
     createdBy?: boolean
@@ -1872,7 +1884,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type CommunityOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "location" | "state" | "lga" | "communityType" | "status" | "createdBy" | "createdAt" | "updatedAt", ExtArgs["result"]["community"]>
+  export type CommunityOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "location" | "state" | "lga" | "ward" | "communityType" | "status" | "createdBy" | "createdAt" | "updatedAt", ExtArgs["result"]["community"]>
   export type CommunityInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     members?: boolean | Community$membersArgs<ExtArgs>
     posts?: boolean | Community$postsArgs<ExtArgs>
@@ -1896,6 +1908,7 @@ export namespace Prisma {
       location: string | null
       state: string | null
       lga: string | null
+      ward: string | null
       communityType: $Enums.CommunityType
       status: $Enums.CommunityStatus
       createdBy: string
@@ -2333,6 +2346,7 @@ export namespace Prisma {
     readonly location: FieldRef<"Community", 'String'>
     readonly state: FieldRef<"Community", 'String'>
     readonly lga: FieldRef<"Community", 'String'>
+    readonly ward: FieldRef<"Community", 'String'>
     readonly communityType: FieldRef<"Community", 'CommunityType'>
     readonly status: FieldRef<"Community", 'CommunityStatus'>
     readonly createdBy: FieldRef<"Community", 'String'>
@@ -2833,6 +2847,7 @@ export namespace Prisma {
     location: string | null
     state: string | null
     lga: string | null
+    ward: string | null
     email: string | null
     requestedBy: string | null
     status: $Enums.RequestStatus | null
@@ -2850,6 +2865,7 @@ export namespace Prisma {
     location: string | null
     state: string | null
     lga: string | null
+    ward: string | null
     email: string | null
     requestedBy: string | null
     status: $Enums.RequestStatus | null
@@ -2867,6 +2883,7 @@ export namespace Prisma {
     location: number
     state: number
     lga: number
+    ward: number
     email: number
     requestedBy: number
     status: number
@@ -2886,6 +2903,7 @@ export namespace Prisma {
     location?: true
     state?: true
     lga?: true
+    ward?: true
     email?: true
     requestedBy?: true
     status?: true
@@ -2903,6 +2921,7 @@ export namespace Prisma {
     location?: true
     state?: true
     lga?: true
+    ward?: true
     email?: true
     requestedBy?: true
     status?: true
@@ -2920,6 +2939,7 @@ export namespace Prisma {
     location?: true
     state?: true
     lga?: true
+    ward?: true
     email?: true
     requestedBy?: true
     status?: true
@@ -3010,6 +3030,7 @@ export namespace Prisma {
     location: string | null
     state: string | null
     lga: string | null
+    ward: string | null
     email: string
     requestedBy: string
     status: $Enums.RequestStatus
@@ -3044,6 +3065,7 @@ export namespace Prisma {
     location?: boolean
     state?: boolean
     lga?: boolean
+    ward?: boolean
     email?: boolean
     requestedBy?: boolean
     status?: boolean
@@ -3061,6 +3083,7 @@ export namespace Prisma {
     location?: boolean
     state?: boolean
     lga?: boolean
+    ward?: boolean
     email?: boolean
     requestedBy?: boolean
     status?: boolean
@@ -3078,6 +3101,7 @@ export namespace Prisma {
     location?: boolean
     state?: boolean
     lga?: boolean
+    ward?: boolean
     email?: boolean
     requestedBy?: boolean
     status?: boolean
@@ -3095,6 +3119,7 @@ export namespace Prisma {
     location?: boolean
     state?: boolean
     lga?: boolean
+    ward?: boolean
     email?: boolean
     requestedBy?: boolean
     status?: boolean
@@ -3105,7 +3130,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type CommunityRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "location" | "state" | "lga" | "email" | "requestedBy" | "status" | "rejectionReason" | "approvedBy" | "communityId" | "createdAt" | "updatedAt", ExtArgs["result"]["communityRequest"]>
+  export type CommunityRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "location" | "state" | "lga" | "ward" | "email" | "requestedBy" | "status" | "rejectionReason" | "approvedBy" | "communityId" | "createdAt" | "updatedAt", ExtArgs["result"]["communityRequest"]>
 
   export type $CommunityRequestPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "CommunityRequest"
@@ -3117,6 +3142,7 @@ export namespace Prisma {
       location: string | null
       state: string | null
       lga: string | null
+      ward: string | null
       email: string
       requestedBy: string
       status: $Enums.RequestStatus
@@ -3554,6 +3580,7 @@ export namespace Prisma {
     readonly location: FieldRef<"CommunityRequest", 'String'>
     readonly state: FieldRef<"CommunityRequest", 'String'>
     readonly lga: FieldRef<"CommunityRequest", 'String'>
+    readonly ward: FieldRef<"CommunityRequest", 'String'>
     readonly email: FieldRef<"CommunityRequest", 'String'>
     readonly requestedBy: FieldRef<"CommunityRequest", 'String'>
     readonly status: FieldRef<"CommunityRequest", 'RequestStatus'>
@@ -9629,6 +9656,7 @@ export namespace Prisma {
     location: 'location',
     state: 'state',
     lga: 'lga',
+    ward: 'ward',
     communityType: 'communityType',
     status: 'status',
     createdBy: 'createdBy',
@@ -9646,6 +9674,7 @@ export namespace Prisma {
     location: 'location',
     state: 'state',
     lga: 'lga',
+    ward: 'ward',
     email: 'email',
     requestedBy: 'requestedBy',
     status: 'status',
@@ -9882,6 +9911,7 @@ export namespace Prisma {
     location?: StringNullableFilter<"Community"> | string | null
     state?: StringNullableFilter<"Community"> | string | null
     lga?: StringNullableFilter<"Community"> | string | null
+    ward?: StringNullableFilter<"Community"> | string | null
     communityType?: EnumCommunityTypeFilter<"Community"> | $Enums.CommunityType
     status?: EnumCommunityStatusFilter<"Community"> | $Enums.CommunityStatus
     createdBy?: StringFilter<"Community"> | string
@@ -9899,6 +9929,7 @@ export namespace Prisma {
     location?: SortOrderInput | SortOrder
     state?: SortOrderInput | SortOrder
     lga?: SortOrderInput | SortOrder
+    ward?: SortOrderInput | SortOrder
     communityType?: SortOrder
     status?: SortOrder
     createdBy?: SortOrder
@@ -9919,6 +9950,7 @@ export namespace Prisma {
     location?: StringNullableFilter<"Community"> | string | null
     state?: StringNullableFilter<"Community"> | string | null
     lga?: StringNullableFilter<"Community"> | string | null
+    ward?: StringNullableFilter<"Community"> | string | null
     communityType?: EnumCommunityTypeFilter<"Community"> | $Enums.CommunityType
     status?: EnumCommunityStatusFilter<"Community"> | $Enums.CommunityStatus
     createdBy?: StringFilter<"Community"> | string
@@ -9936,6 +9968,7 @@ export namespace Prisma {
     location?: SortOrderInput | SortOrder
     state?: SortOrderInput | SortOrder
     lga?: SortOrderInput | SortOrder
+    ward?: SortOrderInput | SortOrder
     communityType?: SortOrder
     status?: SortOrder
     createdBy?: SortOrder
@@ -9956,6 +9989,7 @@ export namespace Prisma {
     location?: StringNullableWithAggregatesFilter<"Community"> | string | null
     state?: StringNullableWithAggregatesFilter<"Community"> | string | null
     lga?: StringNullableWithAggregatesFilter<"Community"> | string | null
+    ward?: StringNullableWithAggregatesFilter<"Community"> | string | null
     communityType?: EnumCommunityTypeWithAggregatesFilter<"Community"> | $Enums.CommunityType
     status?: EnumCommunityStatusWithAggregatesFilter<"Community"> | $Enums.CommunityStatus
     createdBy?: StringWithAggregatesFilter<"Community"> | string
@@ -9973,6 +10007,7 @@ export namespace Prisma {
     location?: StringNullableFilter<"CommunityRequest"> | string | null
     state?: StringNullableFilter<"CommunityRequest"> | string | null
     lga?: StringNullableFilter<"CommunityRequest"> | string | null
+    ward?: StringNullableFilter<"CommunityRequest"> | string | null
     email?: StringFilter<"CommunityRequest"> | string
     requestedBy?: StringFilter<"CommunityRequest"> | string
     status?: EnumRequestStatusFilter<"CommunityRequest"> | $Enums.RequestStatus
@@ -9990,6 +10025,7 @@ export namespace Prisma {
     location?: SortOrderInput | SortOrder
     state?: SortOrderInput | SortOrder
     lga?: SortOrderInput | SortOrder
+    ward?: SortOrderInput | SortOrder
     email?: SortOrder
     requestedBy?: SortOrder
     status?: SortOrder
@@ -10011,6 +10047,7 @@ export namespace Prisma {
     location?: StringNullableFilter<"CommunityRequest"> | string | null
     state?: StringNullableFilter<"CommunityRequest"> | string | null
     lga?: StringNullableFilter<"CommunityRequest"> | string | null
+    ward?: StringNullableFilter<"CommunityRequest"> | string | null
     email?: StringFilter<"CommunityRequest"> | string
     requestedBy?: StringFilter<"CommunityRequest"> | string
     status?: EnumRequestStatusFilter<"CommunityRequest"> | $Enums.RequestStatus
@@ -10027,6 +10064,7 @@ export namespace Prisma {
     location?: SortOrderInput | SortOrder
     state?: SortOrderInput | SortOrder
     lga?: SortOrderInput | SortOrder
+    ward?: SortOrderInput | SortOrder
     email?: SortOrder
     requestedBy?: SortOrder
     status?: SortOrder
@@ -10050,6 +10088,7 @@ export namespace Prisma {
     location?: StringNullableWithAggregatesFilter<"CommunityRequest"> | string | null
     state?: StringNullableWithAggregatesFilter<"CommunityRequest"> | string | null
     lga?: StringNullableWithAggregatesFilter<"CommunityRequest"> | string | null
+    ward?: StringNullableWithAggregatesFilter<"CommunityRequest"> | string | null
     email?: StringWithAggregatesFilter<"CommunityRequest"> | string
     requestedBy?: StringWithAggregatesFilter<"CommunityRequest"> | string
     status?: EnumRequestStatusWithAggregatesFilter<"CommunityRequest"> | $Enums.RequestStatus
@@ -10433,6 +10472,7 @@ export namespace Prisma {
     location?: string | null
     state?: string | null
     lga?: string | null
+    ward?: string | null
     communityType?: $Enums.CommunityType
     status?: $Enums.CommunityStatus
     createdBy: string
@@ -10450,6 +10490,7 @@ export namespace Prisma {
     location?: string | null
     state?: string | null
     lga?: string | null
+    ward?: string | null
     communityType?: $Enums.CommunityType
     status?: $Enums.CommunityStatus
     createdBy: string
@@ -10467,6 +10508,7 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     state?: NullableStringFieldUpdateOperationsInput | string | null
     lga?: NullableStringFieldUpdateOperationsInput | string | null
+    ward?: NullableStringFieldUpdateOperationsInput | string | null
     communityType?: EnumCommunityTypeFieldUpdateOperationsInput | $Enums.CommunityType
     status?: EnumCommunityStatusFieldUpdateOperationsInput | $Enums.CommunityStatus
     createdBy?: StringFieldUpdateOperationsInput | string
@@ -10484,6 +10526,7 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     state?: NullableStringFieldUpdateOperationsInput | string | null
     lga?: NullableStringFieldUpdateOperationsInput | string | null
+    ward?: NullableStringFieldUpdateOperationsInput | string | null
     communityType?: EnumCommunityTypeFieldUpdateOperationsInput | $Enums.CommunityType
     status?: EnumCommunityStatusFieldUpdateOperationsInput | $Enums.CommunityStatus
     createdBy?: StringFieldUpdateOperationsInput | string
@@ -10501,6 +10544,7 @@ export namespace Prisma {
     location?: string | null
     state?: string | null
     lga?: string | null
+    ward?: string | null
     communityType?: $Enums.CommunityType
     status?: $Enums.CommunityStatus
     createdBy: string
@@ -10515,6 +10559,7 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     state?: NullableStringFieldUpdateOperationsInput | string | null
     lga?: NullableStringFieldUpdateOperationsInput | string | null
+    ward?: NullableStringFieldUpdateOperationsInput | string | null
     communityType?: EnumCommunityTypeFieldUpdateOperationsInput | $Enums.CommunityType
     status?: EnumCommunityStatusFieldUpdateOperationsInput | $Enums.CommunityStatus
     createdBy?: StringFieldUpdateOperationsInput | string
@@ -10529,6 +10574,7 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     state?: NullableStringFieldUpdateOperationsInput | string | null
     lga?: NullableStringFieldUpdateOperationsInput | string | null
+    ward?: NullableStringFieldUpdateOperationsInput | string | null
     communityType?: EnumCommunityTypeFieldUpdateOperationsInput | $Enums.CommunityType
     status?: EnumCommunityStatusFieldUpdateOperationsInput | $Enums.CommunityStatus
     createdBy?: StringFieldUpdateOperationsInput | string
@@ -10543,6 +10589,7 @@ export namespace Prisma {
     location?: string | null
     state?: string | null
     lga?: string | null
+    ward?: string | null
     email: string
     requestedBy: string
     status?: $Enums.RequestStatus
@@ -10560,6 +10607,7 @@ export namespace Prisma {
     location?: string | null
     state?: string | null
     lga?: string | null
+    ward?: string | null
     email: string
     requestedBy: string
     status?: $Enums.RequestStatus
@@ -10577,6 +10625,7 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     state?: NullableStringFieldUpdateOperationsInput | string | null
     lga?: NullableStringFieldUpdateOperationsInput | string | null
+    ward?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     requestedBy?: StringFieldUpdateOperationsInput | string
     status?: EnumRequestStatusFieldUpdateOperationsInput | $Enums.RequestStatus
@@ -10594,6 +10643,7 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     state?: NullableStringFieldUpdateOperationsInput | string | null
     lga?: NullableStringFieldUpdateOperationsInput | string | null
+    ward?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     requestedBy?: StringFieldUpdateOperationsInput | string
     status?: EnumRequestStatusFieldUpdateOperationsInput | $Enums.RequestStatus
@@ -10611,6 +10661,7 @@ export namespace Prisma {
     location?: string | null
     state?: string | null
     lga?: string | null
+    ward?: string | null
     email: string
     requestedBy: string
     status?: $Enums.RequestStatus
@@ -10628,6 +10679,7 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     state?: NullableStringFieldUpdateOperationsInput | string | null
     lga?: NullableStringFieldUpdateOperationsInput | string | null
+    ward?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     requestedBy?: StringFieldUpdateOperationsInput | string
     status?: EnumRequestStatusFieldUpdateOperationsInput | $Enums.RequestStatus
@@ -10645,6 +10697,7 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     state?: NullableStringFieldUpdateOperationsInput | string | null
     lga?: NullableStringFieldUpdateOperationsInput | string | null
+    ward?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     requestedBy?: StringFieldUpdateOperationsInput | string
     status?: EnumRequestStatusFieldUpdateOperationsInput | $Enums.RequestStatus
@@ -11139,6 +11192,7 @@ export namespace Prisma {
     location?: SortOrder
     state?: SortOrder
     lga?: SortOrder
+    ward?: SortOrder
     communityType?: SortOrder
     status?: SortOrder
     createdBy?: SortOrder
@@ -11153,6 +11207,7 @@ export namespace Prisma {
     location?: SortOrder
     state?: SortOrder
     lga?: SortOrder
+    ward?: SortOrder
     communityType?: SortOrder
     status?: SortOrder
     createdBy?: SortOrder
@@ -11167,6 +11222,7 @@ export namespace Prisma {
     location?: SortOrder
     state?: SortOrder
     lga?: SortOrder
+    ward?: SortOrder
     communityType?: SortOrder
     status?: SortOrder
     createdBy?: SortOrder
@@ -11258,6 +11314,7 @@ export namespace Prisma {
     location?: SortOrder
     state?: SortOrder
     lga?: SortOrder
+    ward?: SortOrder
     email?: SortOrder
     requestedBy?: SortOrder
     status?: SortOrder
@@ -11275,6 +11332,7 @@ export namespace Prisma {
     location?: SortOrder
     state?: SortOrder
     lga?: SortOrder
+    ward?: SortOrder
     email?: SortOrder
     requestedBy?: SortOrder
     status?: SortOrder
@@ -11292,6 +11350,7 @@ export namespace Prisma {
     location?: SortOrder
     state?: SortOrder
     lga?: SortOrder
+    ward?: SortOrder
     email?: SortOrder
     requestedBy?: SortOrder
     status?: SortOrder
@@ -12448,6 +12507,7 @@ export namespace Prisma {
     location?: string | null
     state?: string | null
     lga?: string | null
+    ward?: string | null
     communityType?: $Enums.CommunityType
     status?: $Enums.CommunityStatus
     createdBy: string
@@ -12464,6 +12524,7 @@ export namespace Prisma {
     location?: string | null
     state?: string | null
     lga?: string | null
+    ward?: string | null
     communityType?: $Enums.CommunityType
     status?: $Enums.CommunityStatus
     createdBy: string
@@ -12496,6 +12557,7 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     state?: NullableStringFieldUpdateOperationsInput | string | null
     lga?: NullableStringFieldUpdateOperationsInput | string | null
+    ward?: NullableStringFieldUpdateOperationsInput | string | null
     communityType?: EnumCommunityTypeFieldUpdateOperationsInput | $Enums.CommunityType
     status?: EnumCommunityStatusFieldUpdateOperationsInput | $Enums.CommunityStatus
     createdBy?: StringFieldUpdateOperationsInput | string
@@ -12512,6 +12574,7 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     state?: NullableStringFieldUpdateOperationsInput | string | null
     lga?: NullableStringFieldUpdateOperationsInput | string | null
+    ward?: NullableStringFieldUpdateOperationsInput | string | null
     communityType?: EnumCommunityTypeFieldUpdateOperationsInput | $Enums.CommunityType
     status?: EnumCommunityStatusFieldUpdateOperationsInput | $Enums.CommunityStatus
     createdBy?: StringFieldUpdateOperationsInput | string
@@ -12528,6 +12591,7 @@ export namespace Prisma {
     location?: string | null
     state?: string | null
     lga?: string | null
+    ward?: string | null
     communityType?: $Enums.CommunityType
     status?: $Enums.CommunityStatus
     createdBy: string
@@ -12544,6 +12608,7 @@ export namespace Prisma {
     location?: string | null
     state?: string | null
     lga?: string | null
+    ward?: string | null
     communityType?: $Enums.CommunityType
     status?: $Enums.CommunityStatus
     createdBy: string
@@ -12632,6 +12697,7 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     state?: NullableStringFieldUpdateOperationsInput | string | null
     lga?: NullableStringFieldUpdateOperationsInput | string | null
+    ward?: NullableStringFieldUpdateOperationsInput | string | null
     communityType?: EnumCommunityTypeFieldUpdateOperationsInput | $Enums.CommunityType
     status?: EnumCommunityStatusFieldUpdateOperationsInput | $Enums.CommunityStatus
     createdBy?: StringFieldUpdateOperationsInput | string
@@ -12648,6 +12714,7 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     state?: NullableStringFieldUpdateOperationsInput | string | null
     lga?: NullableStringFieldUpdateOperationsInput | string | null
+    ward?: NullableStringFieldUpdateOperationsInput | string | null
     communityType?: EnumCommunityTypeFieldUpdateOperationsInput | $Enums.CommunityType
     status?: EnumCommunityStatusFieldUpdateOperationsInput | $Enums.CommunityStatus
     createdBy?: StringFieldUpdateOperationsInput | string
@@ -13064,6 +13131,7 @@ export namespace Prisma {
     location?: string | null
     state?: string | null
     lga?: string | null
+    ward?: string | null
     communityType?: $Enums.CommunityType
     status?: $Enums.CommunityStatus
     createdBy: string
@@ -13080,6 +13148,7 @@ export namespace Prisma {
     location?: string | null
     state?: string | null
     lga?: string | null
+    ward?: string | null
     communityType?: $Enums.CommunityType
     status?: $Enums.CommunityStatus
     createdBy: string
@@ -13112,6 +13181,7 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     state?: NullableStringFieldUpdateOperationsInput | string | null
     lga?: NullableStringFieldUpdateOperationsInput | string | null
+    ward?: NullableStringFieldUpdateOperationsInput | string | null
     communityType?: EnumCommunityTypeFieldUpdateOperationsInput | $Enums.CommunityType
     status?: EnumCommunityStatusFieldUpdateOperationsInput | $Enums.CommunityStatus
     createdBy?: StringFieldUpdateOperationsInput | string
@@ -13128,6 +13198,7 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     state?: NullableStringFieldUpdateOperationsInput | string | null
     lga?: NullableStringFieldUpdateOperationsInput | string | null
+    ward?: NullableStringFieldUpdateOperationsInput | string | null
     communityType?: EnumCommunityTypeFieldUpdateOperationsInput | $Enums.CommunityType
     status?: EnumCommunityStatusFieldUpdateOperationsInput | $Enums.CommunityStatus
     createdBy?: StringFieldUpdateOperationsInput | string
