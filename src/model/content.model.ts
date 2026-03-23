@@ -361,7 +361,7 @@ export const contentService = {
         }
 
         // Facebook-like flow: System LGA communities auto-approve, user-created need approval
-        const autoApprove = community.communityType === 'SYSTEM_LGA';
+        const autoApprove = community.communityType === 'SYSTEM_LGA' || community.communityType === 'SYSTEM_WARD';
 
         return await db.communityMember.create({
             data: {
